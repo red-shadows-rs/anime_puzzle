@@ -1,0 +1,56 @@
+/* 
+  aPuzzle | RS PROJECT [ nightcoreat ]
+*/
+
+header,
+    footer {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    header h1 {
+      font-size: 2em;
+      color: white;
+      text-shadow: 0 0 10px #8f5cf4;
+    }
+
+    .main-menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 50px 0;
+    }
+
+    .main-menu button {
+      background-color: #8f5cf4;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .main-menu button:hover {
+      background-color: #a27cff;
+    }
+
+    .menu-card {
+      background-color: rgba(47, 51, 74, 0.3);
+      backdrop-filter: blur(15px);
+      border-radius: 16px;
+      padding: 30px 20px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(143, 92, 244, 0.2);
+    }
+
+    .menu-card h2 {
+      margin-bottom: 15px;
+      color: white;
+      font-size: 1.5em;
+    }
