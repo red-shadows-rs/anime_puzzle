@@ -1,0 +1,51 @@
+<!--
+  aPuzzle | RS PROJECT [ nightcoreat ]
+-->
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>🍬 aPuzzle - اللعب</title>
+    <link rel="stylesheet" href="styles/game-uiStyle.css" />
+    <link rel="stylesheet" href="styles/winStyle.css" />
+
+</head>
+
+<body>
+    <header>
+        <h1 id="level-title">🧩 لغز الأنمي</h1>
+        <div id="difficulty-display" style="background-color: rgba(47, 51, 74, 0.3); backdrop-filter: blur(10px); padding: 10px; border-radius: 12px; font-size: 18px; color: white; text-align: center; margin: 20px auto; max-width: fit-content;">
+            🎯 مستوى الصعوبة: <span id="difficulty-label">---</span>
+        </div>
+    </header>
+
+    <div id="game-card">
+        <div id="puzzle-board"></div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button id="hintButton">💡 تلميح</button>
+            <button id="solveButton">🤖 حل تلقائي</button>
+            <div id="toolCounts" style="margin-top: 10px; font-weight: bold;"></div>
+        </div>
+    </div>
+
+    <footer>
+        <button onclick="location.href='shop.html'">🛒 متجر الأدوات</button>
+        <button onclick="location.href='levels.html'">🔙 الرجوع إلى قائمة المستويات</button>
+    </footer>
+
+    <div class="win-modal" id="winModal" style="display: none;">
+        <div class="win-content">
+            <h2>🎉 أحسنت!</h2>
+            <div class="stars" id="starRating">⭐⭐⭐</div>
+            <p id="rewardText">لقد حصلت على 💰 <span id="rewardAmount">50</span> عملة!</p>
+            <button onclick="closeWinModal()">🎮 الرجوع إلى قائمة المستويات</button>
+        </div>
+    </div>
+
+    <script src="scripts/levels.js"></script>
+    <script src="scripts/game.js"></script>
+</body>
+
+</html>
