@@ -1,0 +1,62 @@
+/* 
+  aPuzzle | RS PROJECT [ nightcoreat ]
+*/
+
+.win-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .win-content {
+      background-color: rgba(47, 51, 74, 0.3);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+      border: 2px solid #8f5cf4;
+      box-shadow: 0 0 20px #8f5cf4;
+      color: white;
+      max-width: 300px;
+      width: 90%;
+    }
+
+    .win-content h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .win-content button {
+      background: linear-gradient(45deg, #8f5cf4, #a27cff);
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      box-shadow: 0 0 10px #a27cff;
+      transition: 0.3s;
+    }
+
+    .win-content button:hover {
+      transform: scale(1.05);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .stars {
+      font-size: 30px;
+      margin-bottom: 10px;
+      color: gold;
+    }
