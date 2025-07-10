@@ -1,0 +1,108 @@
+<!--
+  aPuzzle | RS PROJECT [ nightcoreat ]
+-->
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>🍬 aPuzzle - قائمة الألغاز</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles/game-ui.css" />
+  <link rel="stylesheet" href="styles/levelStyle.css" />
+</head>
+<body>
+  <h1>🧩 قائمة الألغاز</h1>
+  <div class="currency-card">
+  💰 عملاتك: <span id="coins">0</span>
+  <button onclick="location.href='shop.html'">🛒 متجر الأدوات</button>
+  </div>
+
+  <div class="levels-grid" id="levels-list"></div>
+
+  <script src="scripts/levels.js"></script>
+  <script>
+  const coinsEl = document.getElementById("coins");
+  const list = document.getElementById("levels-list");
+
+  let coins = parseInt(localStorage.getItem("coins") || "500");
+  coinsEl.textContent = coins;
+
+  const progress = new Set(JSON.parse(localStorage.getItem("puzzleProgress") || "[]"));
+
+  function updateCoinsDisplay() {
+    coinsEl.textContent = coins;
+  }
+
+  // تحميل بيانات المتجر أولا
+  fetch("assets/shop.json")
+    .then(res => res.json())
+    .then(shopItems => {
+      renderLevels(shopItems);
+    });
+
+  function renderLevels(shopItems) {
+    list.innerHTML = "";
+
+    levels.forEach(level => {
+      const shopItem = shopItems.find(item => item.type === "level" && item.levelId === level.id);
+      const price = shopItem ? shopItem.price : 0;
+
+      const isProgressUnlocked = progress.has(level.id);
+      const isShopUnlocked = localStorage.getItem(`unlocked_level_${level.id}`) === "true";
+      const isUnlocked = level.id === 1 || isProgressUnlocked || isShopUnlocked;
+
+      const card = document.createElement("div");
+      card.className = "level-card";
+      if (!isUnlocked) card.classList.add("locked");
+
+      card.innerHTML = `
+        <img src="${level.image}" alt="preview">
+        <h3>${level.name}</h3>
+        <p>🧩 ${level.width} × ${level.height}</p>
+      `;
+
+      const btn = document.createElement("button");
+
+      if (isUnlocked) {
+        btn.textContent = "🚀 ابدأ";
+        btn.onclick = () => {
+          window.location.href = `play.html?level=${level.id}`;
+        };
+      } else if (isShopUnlocked) {
+        btn.textContent = "🛒 شراء من المتجر";
+        btn.disabled = true;
+      } else {
+        btn.textContent = `🔓 افتح بـ ${price} عملة`;
+        btn.onclick = () => {
+          if (coins >= price) {
+            if (confirm(`هل تريد فتح هذا اللغز بـ ${price} عملة؟`)) {
+              coins -= price;
+              updateCoinsDisplay();
+              localStorage.setItem("coins", coins);
+              progress.add(level.id);
+              localStorage.setItem("puzzleProgress", JSON.stringify([...progress]));
+              renderLevels(shopItems);
+            }
+          } else {
+            alert("❌ لا تملك عملات كافية.");
+          }
+        };
+      }
+
+      card.appendChild(btn);
+
+      if (!isUnlocked) {
+        const overlay = document.createElement("div");
+        overlay.className = "locked-overlay";
+        overlay.textContent = "🔒 مقفل";
+        card.appendChild(overlay);
+      }
+
+      list.appendChild(card);
+    });
+  }
+</script>
+
+</body>
+</html>
