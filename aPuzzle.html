@@ -1,0 +1,43 @@
+<!--
+  aPuzzle | RS PROJECT [ nightcoreat ]
+-->
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🍬 aPuzzle - القائمة الرئيسية</title>
+  <link rel="stylesheet" href="styles/game-ui.css" />
+  <link rel="stylesheet" href="styles/aPuzzleStyle.css" />
+</head>
+
+<body>
+  <div id="game-container" class="anime-theme">
+    <header>
+      <h1>🍬 aPuzzle</h1>
+    </header>
+
+    <main class="main-menu">
+      <div class="menu-card">
+        <h2>🎮 ابدأ اللعبة</h2>
+        <button onclick="startGame()">ابدأ</button>
+      </div>
+
+      <div class="menu-card">
+        <h2>🛒 متجر الأدوات</h2>
+        <button onclick="location.href='shop.html'">الدخول إلى المتجر</button>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    function startGame() {
+      window.location.href = "levels.html";
+    }
+  </script>
+</body>
+
+</html>
