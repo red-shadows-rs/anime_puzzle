@@ -1,0 +1,13 @@
+/* 
+  aPuzzle | RS PROJECT [ nightcoreat ]
+*/
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: url('../assets/images/anime-bg.jpg') no-repeat center top;
+  background-size: cover;
+  background-attachment: fixed;
+  color: white;
+  direction: rtl;
+}
