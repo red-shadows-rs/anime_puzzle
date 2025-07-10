@@ -1,0 +1,134 @@
+[
+  {
+    "id": "hint",
+    "name": "تلميح",
+    "type": "tool",
+    "price": 30
+  },
+  {
+    "id": "autoSolve",
+    "name": "حل تلقائي",
+    "type": "tool",
+    "price": 50
+  },
+  {
+    "id": "unlocked_level_2",
+    "name": "فتح: فتاة الموسيقى",
+    "type": "level",
+    "levelId": 2,
+    "image": "assets/puzzles/guitar_girl.jpg",
+    "price": 30
+  },
+  {
+    "id": "unlocked_level_3",
+    "name": "فتح: فتاة الموضة",
+    "type": "level",
+    "levelId": 3,
+    "image": "assets/puzzles/fasion.jpg",
+    "price": 40
+  },
+  {
+    "id": "unlocked_level_4",
+    "name": "فتح: بورتريه حالمة",
+    "type": "level",
+    "levelId": 4,
+    "image": "assets/puzzles/dreamy_girl.jpg",
+    "price": 50
+  },
+  {
+    "id": "unlocked_level_5",
+    "name": "فتح: أنيقة في الطبيعة",
+    "type": "level",
+    "levelId": 5,
+    "image": "assets/puzzles/natural_beauty_girl.jpg",
+    "price": 70
+  },
+  {
+    "id": "unlocked_level_6",
+    "name": "فتح: زهرة دافئة",
+    "type": "level",
+    "levelId": 6,
+    "image": "assets/puzzles/beauty-crown-flower.jpg",
+    "price": 90
+  },
+  {
+    "id": "unlocked_level_7",
+    "name": "فتح: أميرة الغابة",
+    "type": "level",
+    "levelId": 7,
+    "image": "assets/puzzles/forest_princess.jpg",
+    "price": 110
+  },
+  {
+    "id": "unlocked_level_8",
+    "name": "فتح: همسات الأزهار",
+    "type": "level",
+    "levelId": 8,
+    "image": "assets/puzzles/flower_whispers.jpg",
+    "price": 130
+  },
+  {
+    "id": "unlocked_level_9",
+    "name": "فتح: همسات السكون",
+    "type": "level",
+    "levelId": 9,
+    "image": "assets/puzzles/whispers_of_serenity.png",
+    "price": 150
+  },
+  {
+    "id": "unlocked_level_10",
+    "name": "فتح: ظل القمر",
+    "type": "level",
+    "levelId": 10,
+    "image": "assets/puzzles/moon_shadow.png",
+    "price": 160
+  },
+  {
+    "id": "unlocked_level_11",
+    "name": "فتح: حارسة النجوم",
+    "type": "level",
+    "levelId": 11,
+    "image": "assets/puzzles/cosmic_star_maiden.png",
+    "price": 180
+  },
+  {
+    "id": "unlocked_level_12",
+    "name": "فتح: الرسامة الحالمة",
+    "type": "level",
+    "levelId": 12,
+    "image": "assets/puzzles/dreamy_artist.png",
+    "price": 200
+  },
+  {
+    "id": "unlocked_level_13",
+    "name": "فتح: سيدة الفراشات",
+    "type": "level",
+    "levelId": 13,
+    "image": "assets/puzzles/butterfly_lady.jpg",
+    "price": 220
+  },
+  {
+    "id": "unlocked_level_14",
+    "name": "فتح: روح الطبيعة",
+    "type": "level",
+    "levelId": 14,
+    "image": "assets/puzzles/nature_spirit.jpg",
+    "price": 240
+  },
+  {
+    "id": "unlocked_level_15",
+    "name": "فتح: ساحرة الغابة",
+    "type": "level",
+    "levelId": 15,
+    "image": "assets/puzzles/forest_witch.jpg",
+    "price": 270
+  },
+  {
+    "id": "unlocked_level_16",
+    "name": "فتح: همسات النور",
+    "type": "level",
+    "levelId": 16,
+    "image": "assets/puzzles/lunaria.jpg",
+    "price": 290
+  }
+]
