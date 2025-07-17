@@ -5,7 +5,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const levelId = parseInt(urlParams.get("level") || "1");
 
-const currentLevel = levels.find(l => l.id === levelId);
+const currentLevel = levels.find((l) => l.id === levelId);
 
 const difficultyLabel = document.getElementById("difficulty-label");
 difficultyLabel.textContent = currentLevel.difficulty || "غير معروف";
@@ -16,6 +16,9 @@ const solveBtn = document.getElementById("solveButton");
 
 let hintCount = parseInt(localStorage.getItem("hint") || "0");
 let solveCount = parseInt(localStorage.getItem("autoSolve") || "0");
+
+let startTime;
+let timerInterval;
 
 function updateToolButtons() {
   if (hintCount > 0) {
@@ -76,7 +79,20 @@ for (let row = 0; row < rows; row++) {
 let shuffled = [...pieces].sort(() => Math.random() - 0.5);
 
 function render() {
+  if (!startTime) {
+    startTime = Date.now();
+
+    timerInterval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const minutes = Math.floor(elapsed / 60);
+      const seconds = elapsed % 60;
+      const formatted = `${minutes} دقيقة و ${seconds} ثانية`;
+      document.getElementById("timeSpent").textContent = `⏱️ الوقت: ${formatted}`;
+    }, 1000);
+  }
+
   board.innerHTML = "";
+
   shuffled.forEach((piece, index) => {
     const el = document.createElement("div");
     el.className = "puzzle-piece";
@@ -85,6 +101,7 @@ function render() {
 
     const pieceWidth = board.clientWidth / cols;
     const pieceHeight = board.clientHeight / rows;
+
     el.style.width = pieceWidth + "px";
     el.style.height = pieceHeight + "px";
 
@@ -97,8 +114,8 @@ function render() {
 
   const elements = board.querySelectorAll(".puzzle-piece");
 
-  elements.forEach(el => {
-    el.addEventListener("dragstart", e => {
+  elements.forEach((el) => {
+    el.addEventListener("dragstart", (e) => {
       e.dataTransfer.setData("text/plain", el.dataset.index);
       el.classList.add("dragging");
     });
@@ -107,7 +124,7 @@ function render() {
       el.classList.remove("dragging");
     });
 
-    el.addEventListener("dragover", e => {
+    el.addEventListener("dragover", (e) => {
       e.preventDefault();
       el.style.outline = "2px dashed #fff";
     });
@@ -116,7 +133,7 @@ function render() {
       el.style.outline = "";
     });
 
-    el.addEventListener("drop", e => {
+    el.addEventListener("drop", (e) => {
       e.preventDefault();
       el.style.outline = "";
       const from = parseInt(e.dataTransfer.getData("text/plain"));
@@ -138,18 +155,26 @@ function checkWin() {
 }
 
 function showWinModal() {
+  clearInterval(timerInterval);
+
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const minutes = Math.floor(elapsed / 60);
+  const seconds = elapsed % 60;
+  const formatted = `${minutes} دقيقة و ${seconds} ثانية`;
+
   document.getElementById("winModal").style.display = "flex";
+  document.getElementById("winTime").textContent = `🕒 الوقت المستغرق: ${formatted}`;
 
   const pieces = board.querySelectorAll(".puzzle-piece");
-  pieces.forEach(el => {
+  pieces.forEach((el) => {
     el.style.cursor = "default";
     el.style.border = "none";
     el.draggable = false;
   });
 
   let coins = parseInt(localStorage.getItem("coins") || "0");
-  
   let reward = 0;
+
   switch (currentLevel.difficulty) {
     case "سهل":
       reward = 30;
@@ -187,7 +212,7 @@ function useHint() {
       const targetPiece = board.querySelector(`[data-index="${i}"]`);
       if (targetPiece) {
         targetPiece.style.outline = "3px solid gold";
-        setTimeout(() => targetPiece.style.outline = "", 1500);
+        setTimeout(() => (targetPiece.style.outline = ""), 1500);
       }
       alert(`📍 القطعة رقم ${i + 1} تحتاج للنقل.`);
       break;
