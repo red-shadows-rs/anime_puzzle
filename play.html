@@ -10,6 +10,7 @@
     <title>🍬 aPuzzle - اللعب</title>
     <link rel="stylesheet" href="styles/game-uiStyle.css" />
     <link rel="stylesheet" href="styles/winStyle.css" />
+    <link rel="stylesheet" href="styles/shopStyle.css" />
 
 </head>
 
@@ -21,7 +22,8 @@
             🎯 مستوى الصعوبة: <span id="difficulty-label">---</span>
         </div>
         <div id="timeSpentDisplay"
-            style="background-color: rgba(47, 51, 74, 0.3); backdrop-filter: blur(10px); padding: 10px; border-radius: 12px; font-size: 18px; color: white; text-align: center; margin: 20px auto; max-width: fit-content;"><span id="timeSpent">0</span>
+            style="background-color: rgba(47, 51, 74, 0.3); backdrop-filter: blur(10px); padding: 10px; border-radius: 12px; font-size: 18px; color: white; text-align: center; margin: 20px auto; max-width: fit-content;">
+            <span id="timeSpent">0</span>
         </div>
     </header>
 
@@ -33,9 +35,15 @@
             <div id="toolCounts" style="margin-top: 10px; font-weight: bold;"></div>
         </div>
     </div>
+    <div id="shopModal" class="shop-modal" style="display: none;">
+        <div class="shop-modal-content">
+            <span class="close-btn" onclick="closeShopModal()">×</span>
+            <iframe src="shop.html" style="width: 100%; height: 90vh; border: none;"></iframe>
+        </div>
+    </div>
 
     <footer>
-        <button onclick="location.href='shop.html'">🛒 متجر الأدوات</button>
+        <button onclick="openShopModal()">🛒 متجر الأدوات</button>
         <button onclick="location.href='levels.html'">🔙 الرجوع إلى قائمة المستويات</button>
     </footer>
 
@@ -49,7 +57,15 @@
         </div>
     </div>
 
+    <script>
+        function openShopModal() {
+            document.getElementById("shopModal").style.display = "flex";
+        }
 
+        function closeShopModal() {
+            document.getElementById("shopModal").style.display = "none";
+        }
+    </script>
     <script src="scripts/levels.js"></script>
     <script src="scripts/game.js"></script>
 </body>
