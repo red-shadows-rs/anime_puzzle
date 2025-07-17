@@ -16,8 +16,12 @@
 <body>
     <header>
         <h1 id="level-title">🧩 لغز الأنمي</h1>
-        <div id="difficulty-display" style="background-color: rgba(47, 51, 74, 0.3); backdrop-filter: blur(10px); padding: 10px; border-radius: 12px; font-size: 18px; color: white; text-align: center; margin: 20px auto; max-width: fit-content;">
+        <div id="difficulty-display"
+            style="background-color: rgba(47, 51, 74, 0.3); backdrop-filter: blur(10px); padding: 10px; border-radius: 12px; font-size: 18px; color: white; text-align: center; margin: 20px auto; max-width: fit-content;">
             🎯 مستوى الصعوبة: <span id="difficulty-label">---</span>
+        </div>
+        <div id="timeSpentDisplay"
+            style="background-color: rgba(47, 51, 74, 0.3); backdrop-filter: blur(10px); padding: 10px; border-radius: 12px; font-size: 18px; color: white; text-align: center; margin: 20px auto; max-width: fit-content;"><span id="timeSpent">0</span>
         </div>
     </header>
 
@@ -40,9 +44,11 @@
             <h2>🎉 أحسنت!</h2>
             <div class="stars" id="starRating">⭐⭐⭐</div>
             <p id="rewardText">لقد حصلت على 💰 <span id="rewardAmount">50</span> عملة!</p>
+            <p id="winTime" style="margin-top: 10px; font-weight: bold;"></p>
             <button onclick="closeWinModal()">🎮 الرجوع إلى قائمة المستويات</button>
         </div>
     </div>
+
 
     <script src="scripts/levels.js"></script>
     <script src="scripts/game.js"></script>
