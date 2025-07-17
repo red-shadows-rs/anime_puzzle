@@ -29,9 +29,10 @@ header h1 {
   background-color: rgba(47, 51, 74, 0.3);
   backdrop-filter: blur(10px);
   border-radius: 12px;
-  max-width: 90vw;
+  max-width: 800px;
+  width: auto;
   margin: auto;
-  padding: 5vw;
+  padding: 20px;
   box-shadow: 0 0 20px rgba(143, 92, 244, 0.3);
 }
 
@@ -69,11 +70,11 @@ footer button,
   color: white;
   border: none;
   border-radius: 12px;
-  padding: 3vw 5vw;
-  font-size: 4vw;
+  padding: 12px 25px;
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  margin: 2vw;
+  margin: 10px;
   transition: background-color 0.3s, transform 0.2s;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
