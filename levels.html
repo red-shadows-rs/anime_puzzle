@@ -73,7 +73,7 @@
         btn.textContent = "🛒 شراء من المتجر";
         btn.disabled = true;
       } else {
-        btn.textContent = `🔓 افتح بـ ${price} عملة`;
+        btn.textContent = `🔓 افتح بـ ${price} عملة من متجر الأدوات`;
         btn.onclick = () => {
           if (coins >= price) {
             if (confirm(`هل تريد فتح هذا اللغز بـ ${price} عملة؟`)) {
