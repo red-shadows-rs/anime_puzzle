@@ -2,7 +2,6 @@
   aPuzzle | RS PROJECT [ nightcoreat ]
 */
 
-
 const urlParams = new URLSearchParams(window.location.search);
 const levelId = parseInt(urlParams.get("level") || "1");
 
@@ -149,7 +148,26 @@ function showWinModal() {
   });
 
   let coins = parseInt(localStorage.getItem("coins") || "0");
-  coins += 50;
+  
+  let reward = 0;
+  switch (currentLevel.difficulty) {
+    case "سهل":
+      reward = 30;
+      break;
+    case "متوسط":
+      reward = 50;
+      break;
+    case "صعب":
+      reward = 80;
+      break;
+    case "خبير":
+      reward = 120;
+      break;
+    default:
+      reward = 50;
+  }
+
+  coins += reward;
   localStorage.setItem("coins", coins);
 
   const progress = JSON.parse(localStorage.getItem("puzzleProgress") || "[]");
