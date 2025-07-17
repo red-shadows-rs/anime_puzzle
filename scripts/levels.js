@@ -45,15 +45,15 @@ const levels = [
     width: 8,
     height: 8,
     image: "assets/puzzles/beauty-crown-flower.jpg",
-    difficulty: "صعب"
+    difficulty: "خبير"
   },
   {
     id: 7,
     name: "أميرة الغابة",
-    width: 8,
-    height: 8,
+    width: 9,
+    height: 9,
     image: "assets/puzzles/forest_princess.jpg",
-    difficulty: "صعب"
+    difficulty: "خبير"
   },
   {
     id: 8,
@@ -61,7 +61,7 @@ const levels = [
     width: 8,
     height: 8,
     image: "assets/puzzles/flower_whispers.jpg",
-    difficulty: "صعب"
+    difficulty: "خبير"
   },
   {
     id: 9,
@@ -74,8 +74,8 @@ const levels = [
   {
     id: 10,
     name: "ظل القمر",
-    width: 6,
-    height: 6,
+    width: 5,
+    height: 5,
     image: "assets/puzzles/moon_shadow.png",
     difficulty: "متوسط"
   },
@@ -106,26 +106,25 @@ const levels = [
   {
     id: 14,
     name: "روح الطبيعة",
-    width: 6,
-    height: 6,
+    width: 7,
+    height: 7,
     image: "assets/puzzles/nature_spirit.jpg",
     difficulty: "صعب"
   },
   {
     id: 15,
     name: "ساحرة الغابة",
-    width: 6,
-    height: 6,
+    width: 9,
+    height: 9,
     image: "assets/puzzles/forest_witch.jpg",
     difficulty: "خبير"
   },
   {
     id: 16,
     name: "همسات النور",
-    width: 6,
-    height: 6,
+    width: 9,
+    height: 9,
     image: "assets/puzzles/lunaria.jpg",
     difficulty: "خبير"
   }
 ];
-  
