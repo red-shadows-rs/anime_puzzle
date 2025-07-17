@@ -227,23 +227,41 @@ function autoSolve() {
 }
 
 document.getElementById("hintButton").onclick = () => {
-  const hints = parseInt(localStorage.getItem("hint") || "0");
+  let hints = parseInt(localStorage.getItem("hint") || "0");
+
   if (hints > 0) {
-    localStorage.setItem("hint", hints - 1);
+    hints -= 1;
+    localStorage.setItem("hint", hints);
     useHint();
+    alert(`✅ تم استخدام أداة التلميح.\n📦 المتبقي: ${hints}`);
+
+    if (hints === 0) {
+      alert("⚠️ لقد استخدمت آخر أداة تلميح لديك.");
+    }
   } else {
     alert("❌ لا تملك أدوات تلميح.");
   }
+
+  updateToolCounts();
 };
 
 document.getElementById("solveButton").onclick = () => {
-  const auto = parseInt(localStorage.getItem("autoSolve") || "0");
+  let auto = parseInt(localStorage.getItem("autoSolve") || "0");
+
   if (auto > 0) {
-    localStorage.setItem("autoSolve", auto - 1);
+    auto -= 1;
+    localStorage.setItem("autoSolve", auto);
     autoSolve();
+    alert(`✅ تم استخدام أداة الحل التلقائي.\n📦 المتبقي: ${auto}`);
+
+    if (auto === 0) {
+      alert("⚠️ لقد استخدمت آخر أداة حل تلقائي لديك.");
+    }
   } else {
     alert("❌ لا تملك أدوات حل تلقائي.");
   }
+
+  updateToolCounts();
 };
 
 render();
