@@ -17,14 +17,22 @@
   <div class="shop-container">
     <h2>🛒 متجر | 🍬 aPuzzle</h2>
 
-    <div class="coins-bubble">
-      💰 رصيدك الحالي: <span id="coins">0</span>
-    </div>
+    <div class="coins-bubble">💰 رصيدك الحالي: <span id="coins">0</span></div>
 
     <div id="shop-list"></div>
-    <button class="back-button" onclick="window.history.back()">🔙 رجوع</button>
+    <button id="backButton" class="back-button" onclick="window.history.back()">
+      🔙 رجوع
+    </button>
   </div>
+  <script>
+    const backBtn = document.getElementById("backButton");
 
+    if (window.self !== window.top) {
+      backBtn.disabled = true;
+      backBtn.style.opacity = "0.5";
+      backBtn.title = "❌ الرجوع غير متاح داخل النافذة المنبثقة.";
+    }
+  </script>
   <script src="scripts/shop.js"></script>
 </body>
 
