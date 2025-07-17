@@ -25,7 +25,7 @@
     "type": "level",
     "levelId": 3,
     "image": "assets/puzzles/fasion.jpg",
-    "price": 40
+    "price": 35
   },
   {
     "id": "unlocked_level_4",
@@ -33,7 +33,7 @@
     "type": "level",
     "levelId": 4,
     "image": "assets/puzzles/dreamy_girl.jpg",
-    "price": 50
+    "price": 60
   },
   {
     "id": "unlocked_level_5",
@@ -41,7 +41,7 @@
     "type": "level",
     "levelId": 5,
     "image": "assets/puzzles/natural_beauty_girl.jpg",
-    "price": 70
+    "price": 75
   },
   {
     "id": "unlocked_level_6",
@@ -49,7 +49,7 @@
     "type": "level",
     "levelId": 6,
     "image": "assets/puzzles/beauty-crown-flower.jpg",
-    "price": 90
+    "price": 150
   },
   {
     "id": "unlocked_level_7",
@@ -57,7 +57,7 @@
     "type": "level",
     "levelId": 7,
     "image": "assets/puzzles/forest_princess.jpg",
-    "price": 110
+    "price": 160
   },
   {
     "id": "unlocked_level_8",
@@ -65,7 +65,7 @@
     "type": "level",
     "levelId": 8,
     "image": "assets/puzzles/flower_whispers.jpg",
-    "price": 130
+    "price": 170
   },
   {
     "id": "unlocked_level_9",
@@ -73,7 +73,7 @@
     "type": "level",
     "levelId": 9,
     "image": "assets/puzzles/whispers_of_serenity.png",
-    "price": 150
+    "price": 180
   },
   {
     "id": "unlocked_level_10",
@@ -81,7 +81,7 @@
     "type": "level",
     "levelId": 10,
     "image": "assets/puzzles/moon_shadow.png",
-    "price": 160
+    "price": 70
   },
   {
     "id": "unlocked_level_11",
@@ -89,7 +89,7 @@
     "type": "level",
     "levelId": 11,
     "image": "assets/puzzles/cosmic_star_maiden.png",
-    "price": 180
+    "price": 120
   },
   {
     "id": "unlocked_level_12",
@@ -97,7 +97,7 @@
     "type": "level",
     "levelId": 12,
     "image": "assets/puzzles/dreamy_artist.png",
-    "price": 200
+    "price": 190
   },
   {
     "id": "unlocked_level_13",
@@ -105,7 +105,7 @@
     "type": "level",
     "levelId": 13,
     "image": "assets/puzzles/butterfly_lady.jpg",
-    "price": 220
+    "price": 90
   },
   {
     "id": "unlocked_level_14",
@@ -113,7 +113,7 @@
     "type": "level",
     "levelId": 14,
     "image": "assets/puzzles/nature_spirit.jpg",
-    "price": 240
+    "price": 130
   },
   {
     "id": "unlocked_level_15",
@@ -121,7 +121,7 @@
     "type": "level",
     "levelId": 15,
     "image": "assets/puzzles/forest_witch.jpg",
-    "price": 270
+    "price": 200
   },
   {
     "id": "unlocked_level_16",
@@ -129,6 +129,6 @@
     "type": "level",
     "levelId": 16,
     "image": "assets/puzzles/lunaria.jpg",
-    "price": 290
+    "price": 200
   }
 ]
