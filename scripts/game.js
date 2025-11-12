@@ -21,21 +21,11 @@ let startTime;
 let timerInterval;
 
 function updateToolButtons() {
-  if (hintCount > 0) {
-    hintBtn.disabled = false;
-    hintBtn.textContent = `💡 تلميح (${hintCount})`;
-  } else {
-    hintBtn.disabled = true;
-    hintBtn.textContent = "🔒 تلميح (غير متاح)";
-  }
+  hintBtn.disabled = hintCount <= 0;
+  hintBtn.textContent = hintCount > 0 ? `💡 تلميح (${hintCount})` : "🔒 تلميح (غير متاح)";
 
-  if (solveCount > 0) {
-    solveBtn.disabled = false;
-    solveBtn.textContent = `🤖 حل تلقائي (${solveCount})`;
-  } else {
-    solveBtn.disabled = true;
-    solveBtn.textContent = "🔒 حل تلقائي (غير متاح)";
-  }
+  solveBtn.disabled = solveCount <= 0;
+  solveBtn.textContent = solveCount > 0 ? `🤖 حل تلقائي (${solveCount})` : "🔒 حل تلقائي (غير متاح)";
 }
 
 updateToolButtons();
@@ -44,7 +34,12 @@ hintBtn.onclick = () => {
   if (hintCount > 0) {
     hintCount--;
     localStorage.setItem("hint", hintCount);
+    useHint();
+    alert(`✅ تم استخدام أداة التلميح.\n📦 المتبقي: ${hintCount}`);
+    if (hintCount === 0) alert("⚠️ لقد استخدمت آخر أداة تلميح لديك.");
     updateToolButtons();
+  } else {
+    alert("❌ لا تملك أدوات تلميح.");
   }
 };
 
@@ -52,7 +47,12 @@ solveBtn.onclick = () => {
   if (solveCount > 0) {
     solveCount--;
     localStorage.setItem("autoSolve", solveCount);
+    autoSolve();
+    alert(`✅ تم استخدام أداة الحل التلقائي.\n📦 المتبقي: ${solveCount}`);
+    if (solveCount === 0) alert("⚠️ لقد استخدمت آخر أداة حل تلقائي لديك.");
     updateToolButtons();
+  } else {
+    alert("❌ لا تملك أدوات حل تلقائي.");
   }
 };
 
@@ -64,15 +64,12 @@ const imageSrc = currentLevel.image;
 
 board.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 board.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+board.style.gridGap = "0"; // إزالة أي فاصل بين القطع
 
 let pieces = [];
 for (let row = 0; row < rows; row++) {
   for (let col = 0; col < cols; col++) {
-    pieces.push({
-      id: row * cols + col,
-      row,
-      col,
-    });
+    pieces.push({ id: row * cols + col, row, col });
   }
 }
 
@@ -81,7 +78,6 @@ let shuffled = [...pieces].sort(() => Math.random() - 0.5);
 function render() {
   if (!startTime) {
     startTime = Date.now();
-
     timerInterval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
       const minutes = Math.floor(elapsed / 60);
@@ -109,6 +105,9 @@ function render() {
     el.style.backgroundSize = `${cols * 100}% ${rows * 100}%`;
     el.style.backgroundPosition = `${(piece.col / (cols - 1)) * 100}% ${(piece.row / (rows - 1)) * 100}%`;
 
+    const isCorrectPiece = pieces.find(p => p.id === piece.id) !== undefined;
+    el.style.border = isCorrectPiece ? "none" : "1px solid #000";
+
     board.appendChild(el);
   });
 
@@ -126,16 +125,10 @@ function render() {
 
     el.addEventListener("dragover", (e) => {
       e.preventDefault();
-      el.style.outline = "2px dashed #fff";
-    });
-
-    el.addEventListener("dragleave", () => {
-      el.style.outline = "";
     });
 
     el.addEventListener("drop", (e) => {
       e.preventDefault();
-      el.style.outline = "";
       const from = parseInt(e.dataTransfer.getData("text/plain"));
       const to = parseInt(el.dataset.index);
 
@@ -165,8 +158,8 @@ function showWinModal() {
   document.getElementById("winModal").style.display = "flex";
   document.getElementById("winTime").textContent = `🕒 الوقت المستغرق: ${formatted}`;
 
-  const pieces = board.querySelectorAll(".puzzle-piece");
-  pieces.forEach((el) => {
+  const piecesEls = board.querySelectorAll(".puzzle-piece");
+  piecesEls.forEach((el) => {
     el.style.cursor = "default";
     el.style.border = "none";
     el.draggable = false;
@@ -176,20 +169,11 @@ function showWinModal() {
   let reward = 0;
 
   switch (currentLevel.difficulty) {
-    case "سهل":
-      reward = 30;
-      break;
-    case "متوسط":
-      reward = 50;
-      break;
-    case "صعب":
-      reward = 80;
-      break;
-    case "خبير":
-      reward = 120;
-      break;
-    default:
-      reward = 50;
+    case "سهل": reward = 30; break;
+    case "متوسط": reward = 50; break;
+    case "صعب": reward = 80; break;
+    case "خبير": reward = 120; break;
+    default: reward = 50;
   }
 
   coins += reward;
@@ -225,43 +209,5 @@ function autoSolve() {
   render();
   setTimeout(showWinModal, 500);
 }
-
-document.getElementById("hintButton").onclick = () => {
-  let hints = parseInt(localStorage.getItem("hint") || "0");
-
-  if (hints > 0) {
-    hints -= 1;
-    localStorage.setItem("hint", hints);
-    useHint();
-    alert(`✅ تم استخدام أداة التلميح.\n📦 المتبقي: ${hints}`);
-
-    if (hints === 0) {
-      alert("⚠️ لقد استخدمت آخر أداة تلميح لديك.");
-    }
-  } else {
-    alert("❌ لا تملك أدوات تلميح.");
-  }
-
-  updateToolCounts();
-};
-
-document.getElementById("solveButton").onclick = () => {
-  let auto = parseInt(localStorage.getItem("autoSolve") || "0");
-
-  if (auto > 0) {
-    auto -= 1;
-    localStorage.setItem("autoSolve", auto);
-    autoSolve();
-    alert(`✅ تم استخدام أداة الحل التلقائي.\n📦 المتبقي: ${auto}`);
-
-    if (auto === 0) {
-      alert("⚠️ لقد استخدمت آخر أداة حل تلقائي لديك.");
-    }
-  } else {
-    alert("❌ لا تملك أدوات حل تلقائي.");
-  }
-
-  updateToolCounts();
-};
 
 render();
