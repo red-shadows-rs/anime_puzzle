@@ -19,23 +19,18 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
     const backBtn = document.getElementById("backButton");
-    
-    // فحص هل الرابط يحتوي على mode=modal
     const urlParams = new URLSearchParams(window.location.search);
     const isModal = urlParams.get('mode') === 'modal';
 
     if (backBtn) {
-        if (isModal) {
-            // الحالة الأولى: مفتوح كنافذة منبثقة داخل اللعب
+        if (isModal) {      
             backBtn.textContent = "❌ إغلاق المتجر";
             backBtn.addEventListener('click', () => {
                 window.parent.postMessage(['close-shop'], '*');
             });
         } else {
-            // الحالة الثانية: مفتوح كصفحة كاملة (سواء ديسكورد أو متصفح)
             backBtn.textContent = "🔙 رجوع";
             backBtn.addEventListener('click', () => {
-                // إذا كان هناك تاريخ للرجوع نستخدمه، وإلا نعود للمستويات
                 if (document.referrer.includes('levels.html')) {
                     window.history.back();
                 } else {
