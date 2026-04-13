@@ -84,6 +84,18 @@
         }
         });
     </script>
+    <script src="https://unpkg.com/@discord/embedded-app-sdk"></script>
+    <script src="scripts/discord-presence.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        // انتظر قليلاً حتى يتم تحميل بيانات المستوى من game.js
+                setTimeout(() => {
+                    const levelTitle = document.getElementById('level-title').innerText;
+                    const difficulty = document.getElementById('difficulty-label').innerText;
+                updateActivity(`يحل لغز: ${levelTitle}`, `مستوى الصعوبة: ${difficulty}`);
+            }, 2000);
+        });
+    </script>
     <script src="scripts/levels.js"></script>
     <script src="scripts/game.js"></script>
 </body>
