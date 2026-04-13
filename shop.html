@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🛒 متجر | 🍬 aPuzzle</title>
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' https://unpkg.com; frame-ancestors *;">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval'; frame-ancestors *;">
   <link rel="stylesheet" href="styles/game-ui.css" />
   <link rel="stylesheet" href="styles/shopStyle.css" />
 </head>
@@ -41,7 +41,7 @@
     }
 });
   </script>
-  <script src="https://unpkg.com/@discord/embedded-app-sdk"></script>
+  <script src="scripts/discord-sdk-min.js"></script>
   <script src="scripts/discord-presence.js"></script>
   <script>
     window.onload = () => {
