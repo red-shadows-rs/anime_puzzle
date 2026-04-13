@@ -25,12 +25,11 @@
         if (coinsEl) coinsEl.textContent = coins;
 
         if (backBtn) {
-            // إذا كان المتجر داخل Iframe
             if (window.self !== window.top) {
                 backBtn.textContent = "❌ إغلاق المتجر";
                 backBtn.addEventListener('click', () => {
-                    // إرسال كائن لتجنب Protocol Error
-                    window.parent.postMessage({ type: 'close-shop' }, '*');
+                    // إرسال البيانات كمصفوفة لحل مشكلة Protocol Error
+                    window.parent.postMessage(['close-shop'], '*');
                 });
             } else {
                 backBtn.addEventListener('click', () => {
