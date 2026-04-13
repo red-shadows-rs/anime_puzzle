@@ -1,59 +1,45 @@
-<!--
-  aPuzzle | RS PROJECT
--->
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🛒 متجر | 🍬 aPuzzle</title>
-  <meta name="description" content="Rearrange scattered anime scenes into perfect pictures in this elegant and interactive puzzle game">
-  <meta name="author" content="Red Shadows | RS">
   <meta http-equiv="Content-Security-Policy" content="frame-ancestors *;">
   <link rel="stylesheet" href="styles/game-ui.css" />
   <link rel="stylesheet" href="styles/shopStyle.css" />
 </head>
-
 <body>
   <div class="shop-container">
-    <h2>🛒 متجر | 🍬 aPuzzle</h2>
-
-    <div class="coins-bubble">💰 رصيدك الحالي: <span id="coins">0</span></div>
-
+    <h2>🛒 المتجر</h2>
+    <div class="coins-bubble">💰 رصيدك: <span id="coins">0</span></div>
     <div id="shop-list"></div>
-    <button id="backButton" class="back-button">
-      🔙 رجوع
-    </button>
+    <button id="backButton" class="back-button">🔙 رجوع</button>
   </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const backBtn = document.getElementById("backButton");
-    const coinsEl = document.getElementById("coins");
+        const backBtn = document.getElementById("backButton");
+        const coinsEl = document.getElementById("coins");
 
-    let coins = localStorage.getItem("coins") || "500";
-    if (coinsEl) coinsEl.textContent = coins;
+        let coins = localStorage.getItem("coins") || "500";
+        if (coinsEl) coinsEl.textContent = coins;
 
-    if (backBtn) {
-        // التحقق: هل المتجر داخل نافذة (Iframe)؟
-        if (window.self !== window.top) {
-            backBtn.textContent = "❌ إغلاق المتجر";
-            // داخل زر الرجوع في shop.html
-backBtn.addEventListener('click', () => {
-    // إرسال كائن بدلاً من نص بسيط لتجنب تعارض البروتوكولات
-    window.parent.postMessage({ type: 'close-shop' }, '*');
-});
-        } else {
-            // إذا كان المتجر مفتوحاً كصفحة كاملة
-            backBtn.addEventListener('click', () => {
-                window.location.href = 'levels.html';
-            });
+        if (backBtn) {
+            // إذا كان المتجر داخل Iframe
+            if (window.self !== window.top) {
+                backBtn.textContent = "❌ إغلاق المتجر";
+                backBtn.addEventListener('click', () => {
+                    // إرسال كائن لتجنب Protocol Error
+                    window.parent.postMessage({ type: 'close-shop' }, '*');
+                });
+            } else {
+                backBtn.addEventListener('click', () => {
+                    window.location.href = 'levels.html';
+                });
+            }
         }
-    }
-});
+    });
   </script>
   <script src="scripts/shop.js"></script>
 </body>
-
 </html>
