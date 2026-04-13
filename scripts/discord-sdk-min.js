@@ -6,47 +6,48 @@
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.discordSdk = {}));
 })(this, (function (exports) { 'use strict';
-                              
-    var Discord = require('./Discord.cjs');
-var events = require('./schema/events.cjs');
-var common = require('./schema/common.cjs');
-var responses = require('./schema/responses.cjs');
-var Constants = require('./Constants.cjs');
-var PermissionUtils = require('./utils/PermissionUtils.cjs');
-var PriceUtils = require('./utils/PriceUtils.cjs');
-var mock = require('./mock.cjs');
-var patchUrlMappings = require('./utils/patchUrlMappings.cjs');
 
-const { Commands } = common;
+    class DiscordSDK {
+        constructor(clientId) {
+            this.clientId = clientId;
+            this.instanceId = window.location.search.split('instance_id=')[1]?.split('&')[0];
+            this.commands = this._setupCommands();
+        }
+        async ready() {
+            return new Promise((resolve) => {
+                const check = () => {
+                    if (document.readyState === 'complete') resolve();
+                    else window.addEventListener('load', resolve, { once: true });
+                };
+                check();
+            });
+        }
+        _setupCommands() {
+            return {
+                authorize: async (opts) => this._send('AUTHORIZE', opts),
+                authenticate: async (opts) => this._send('AUTHENTICATE', opts),
+                setActivity: async (opts) => this._send('SET_ACTIVITY', opts),
+            };
+        }
+        async _send(cmd, args) {
+            return new Promise((resolve, reject) => {
+                const nonce = Math.random().toString(36).substring(2);
+                window.parent.postMessage(JSON.stringify({ cmd, args, nonce }), "*");
+                const handler = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.nonce === nonce) {
+                            window.removeEventListener('message', handler);
+                            if (data.evt === 'ERROR') reject(data.data);
+                            else resolve(data.data);
+                        }
+                    } catch (e) {}
+                };
+                window.addEventListener('message', handler);
+            });
+        }
+    }
 
-exports.DiscordSDK = Discord.DiscordSDK;
-Object.defineProperty(exports, "Events", {
-	enumerable: true,
-	get: function () { return events.Events; }
-});
-exports.Common = common;
-exports.Responses = responses;
-Object.defineProperty(exports, "Orientation", {
-	enumerable: true,
-	get: function () { return Constants.Orientation; }
-});
-exports.Permissions = Constants.Permissions;
-Object.defineProperty(exports, "Platform", {
-	enumerable: true,
-	get: function () { return Constants.Platform; }
-});
-Object.defineProperty(exports, "RPCCloseCodes", {
-	enumerable: true,
-	get: function () { return Constants.RPCCloseCodes; }
-});
-Object.defineProperty(exports, "RPCErrorCodes", {
-	enumerable: true,
-	get: function () { return Constants.RPCErrorCodes; }
-});
-exports.PermissionUtils = PermissionUtils.default;
-exports.PriceUtils = PriceUtils.default;
-exports.DiscordSDKMock = mock.DiscordSDKMock;
-exports.attemptRemap = patchUrlMappings.attemptRemap;
-exports.patchUrlMappings = patchUrlMappings.patchUrlMappings;
-exports.Commands = Commands;
+    exports.DiscordSDK = DiscordSDK;
+    Object.defineProperty(exports, '__esModule', { value: true });
 }));
