@@ -3,36 +3,45 @@ let discordSdk;
 let isAuthed = false;
 
 async function setupDiscord() {
+    // جلب الكائن الأساسي من الملف الآخر
     const root = window.discordSdk || window.DiscordSDK;
+    // التأكد من الوصول للفئة (Class) الصحيحة
     const SDKClass = root?.DiscordSDK || root;
 
-    if (typeof SDKClass !== 'function') {
+    if (!SDKClass || typeof SDKClass !== 'function') {
+        console.log("Searching for SDK Class...");
         setTimeout(setupDiscord, 500);
         return;
     }
 
-try {
+    try {
+        // تعريف المتغير محلياً أولاً للتأكد من إنشائه
+        const instance = new SDKClass("1420027881098055700");
+        discordSdk = instance; // إسناده للمتغير العالمي
+
+        await discordSdk.ready();
+        console.log("Discord SDK ready and instance created!");
+
         console.log("Checking Authorization...");
-        const { code } = await discordSdk.commands.authorize({
+        // استخدام instance مباشرة هنا لضمان عدم وجود undefined
+        const { code } = await instance.commands.authorize({
             client_id: "1420027881098055700",
             response_type: "code",
             scope: ["identify", "rpc", "rpc.activities.write"],
             redirect_uri: "https://discordsays.com/.proxy/oauth2/callback",
-            prompt: "none", // بما أنك وافقت سلفاً، نتركها none
+            prompt: "default", 
         });
 
         console.log("Code received, authenticating...");
-        await discordSdk.commands.authenticate({ access_token: code });
+        await instance.commands.authenticate({ access_token: code });
         
         isAuthed = true;
         console.log("Discord Auth Success! Status should appear now.");
 
-        // أرسل تحديث الحالة فوراً
         broadcastInitialActivity();
 
     } catch (e) {
         console.error("Auth failed error details:", e);
-        // إذا كان الخطأ بسبب أنك وافقت سلفاً، قد نحتاج لتجربة prompt: 'default' لمرة واحدة فقط لتجديد التوكن
     }
 }
 
