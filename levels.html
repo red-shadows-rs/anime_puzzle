@@ -29,16 +29,23 @@
   const shopBtn = document.getElementById("btn-go-shop"); 
 
   window.addEventListener('message', (event) => {
-    if (event.data === 'close-shop') {
-        // تنفيذ دالة الإغلاق الموجودة في صفحة اللعب
-        if (typeof closeShopModal === 'function') {
-            closeShopModal();
-        } else {
-            // حل بديل إذا لم يجد الدالة
-            document.getElementById("shopModal").style.display = "none";
+    // التأكد من أن البيانات هي كائن وأن النوع هو المطلوب
+    if (event.data && event.data.type === 'close-shop') {
+        
+        // إغلاق المودال
+        const shopModal = document.getElementById("shopModal");
+        if (shopModal) {
+            shopModal.style.display = "none";
+        }
+
+        // تحديث العملات من localStorage
+        let updatedCoins = localStorage.getItem("coins") || "500";
+        const coinsDisplay = document.getElementById("coins");
+        if (coinsDisplay) {
+            coinsDisplay.textContent = updatedCoins;
         }
         
-        // تحديث العملات في صفحة اللعب لأن المستخدم ربما اشترى شيئاً
+        // إذا كان هناك دالة تحديث شاملة نستدعيها
         if (typeof updateCoinsDisplay === 'function') {
             updateCoinsDisplay();
         }
