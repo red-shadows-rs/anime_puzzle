@@ -39,15 +39,15 @@
         </div>
     </div>
     <div id="shopModal" class="shop-modal" style="display: none;">
-        <div class="shop-modal-content">
-            <span class="close-btn" onclick="closeShopModal()">×</span>
-            <iframe src="shop.html" style="width: 100%; height: 90vh; border: none;"></iframe>
-        </div>
+      <div class="shop-modal-content">
+          <span class="close-btn" id="btn-close-shop">×</span>
+          <iframe src="shop.html" style="width: 100%; height: 90vh; border: none;"></iframe>
+      </div>
     </div>
 
     <footer>
-        <button onclick="openShopModal()">🛒 متجر الأدوات</button>
-        <button onclick="location.href='levels.html'">🔙 الرجوع إلى قائمة المستويات</button>
+        <button id="btn-open-shop">🛒 متجر الأدوات</button>
+        <button id="btn-back-levels">🔙 الرجوع إلى قائمة المستويات</button>
     </footer>
 
     <div class="win-modal" id="winModal" style="display: none;">
@@ -56,18 +56,42 @@
             <div class="stars" id="starRating">⭐⭐⭐</div>
             <p id="rewardText">لقد حصلت على 💰 <span id="rewardAmount">50</span> عملة!</p>
             <p id="winTime" style="margin-top: 10px; font-weight: bold;"></p>
-            <button onclick="closeWinModal()">🎮 الرجوع إلى قائمة المستويات</button>
+            <button id="btn-win-close">🎮 الرجوع إلى قائمة المستويات</button>
         </div>
     </div>
 
     <script>
-        function openShopModal() {
-            document.getElementById("shopModal").style.display = "flex";
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+    const shopModal = document.getElementById("shopModal");
+    const openShopBtn = document.getElementById("btn-open-shop");
+    const closeShopBtn = document.getElementById("btn-close-shop");
 
-        function closeShopModal() {
-            document.getElementById("shopModal").style.display = "none";
-        }
+    if (openShopBtn) {
+        openShopBtn.addEventListener('click', () => {
+            shopModal.style.display = "flex";
+        });
+    }
+
+    if (closeShopBtn) {
+        closeShopBtn.addEventListener('click', () => {
+            shopModal.style.display = "none";
+        });
+    }
+          
+    const backBtn = document.getElementById("btn-back-levels");
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            window.location.href = 'levels.html';
+        });
+    }
+          
+    const winCloseBtn = document.getElementById("btn-win-close");
+    if (winCloseBtn) {
+        winCloseBtn.addEventListener('click', () => {
+            window.location.href = 'levels.html';
+        });
+    }
+});
     </script>
     <script src="scripts/levels.js"></script>
     <script src="scripts/game.js"></script>
