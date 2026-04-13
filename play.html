@@ -66,7 +66,10 @@
         });
 
         if (openShopBtn) {
-            openShopBtn.addEventListener('click', () => { shopModal.style.display = "flex"; });
+            openShopBtn.addEventListener('click', () => { // سنضيف ?mode=modal للرابط ليعرف المتجر أنه داخل نافذة
+    const iframe = shopModal.querySelector('iframe');
+    iframe.src = "shop.html?mode=modal"; 
+    shopModal.style.display = "flex"; });
         }
         if (closeShopBtn) {
             closeShopBtn.addEventListener('click', () => { shopModal.style.display = "none"; });
