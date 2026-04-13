@@ -2,21 +2,23 @@
 let discordSdk;
 
 async function setupDiscord() {
-    // محاولة جلب المكتبة من أكثر من مصدر محتمل
-    const SDK = window.discordSdk?.DiscordSDK || window.DiscordSDK;
+    // في نسخة المتصفح، المكتبة تكون موجودة تحت اسم discordSdk (كائن كبير)
+    // أو Discord (حسب النسخة)، سنحاول الوصول إليها بذكاء
+    const SDKClass = window.discordSdk?.DiscordSDK || window.Discord?.DiscordSDK;
     
-    if (!SDK) {
-        console.error("Discord SDK not found on window object.");
+    if (!SDKClass) {
+        console.warn("Discord SDK not found yet, retrying...");
+        setTimeout(setupDiscord, 500);
         return;
     }
 
-    discordSdk = new SDK("1420027881098055700"); // الـ ID الخاص بك
+    discordSdk = new SDKClass("1420027881098055700");
 
     try {
         await discordSdk.ready();
-        console.log("Discord SDK is ready!");
-
-        // المصادقة ضرورية للـ Activities
+        console.log("Discord SDK ready!");
+        
+        // المصادقة
         const { code } = await discordSdk.commands.authorize({
             client_id: "1420027881098055700",
             response_type: "code",
@@ -26,16 +28,12 @@ async function setupDiscord() {
 
         await discordSdk.commands.authenticate({ access_token: code });
     } catch (e) {
-        console.warn("Discord Auth failed - likely running outside Discord.");
+        console.warn("Discord Auth failed - expected if not running inside Discord Activity.");
     }
 }
 
 async function updateActivity(details, state) {
-    // إذا لم يجهز بعد، انتظر ثم حاول مرة أخرى
-    if (!discordSdk || !discordSdk.instanceId) {
-        setTimeout(() => updateActivity(details, state), 2000);
-        return;
-    }
+    if (!discordSdk) return;
 
     try {
         await discordSdk.commands.setActivity({
@@ -50,7 +48,7 @@ async function updateActivity(details, state) {
             }
         });
     } catch (err) {
-        console.error("Error setting activity:", err);
+        console.error("RPC Error:", err);
     }
 }
 
