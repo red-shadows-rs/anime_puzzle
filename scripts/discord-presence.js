@@ -20,9 +20,9 @@ async function setupDiscord() {
             client_id: "1420027881098055700",
             response_type: "code",
             scope: ["identify", "rpc.activities.write"], // تأكد من وجود هذه الصلاحية
-            prompt: "none",
+            prompt: "default",
         });
-
+        console.log("Authorize success, code received:", code);
         await discordSdk.commands.authenticate({ access_token: code });
         isAuthed = true;
         console.log("Discord Auth Success!");
