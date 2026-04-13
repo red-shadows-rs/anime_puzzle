@@ -2,32 +2,25 @@
 let discordSdk;
 
 async function setupDiscord() {
-    // في نسخة index.global.js التي رفعتها:
-    // المكتبة تعرف نفسها كـ window.discordSdk وبداخلها DiscordSDK
-    const SDKClass = window.discordSdk?.DiscordSDK;
+    // الوصول الآمن للمكتبة لعدم كسر السكربت
+    const root = window.discordSdk || window.DiscordSDK;
+    const SDKClass = root?.DiscordSDK || root;
 
-    if (!SDKClass) {
-        // فحص إضافي: هل هي موجودة مباشرة في window؟
-        const AlternativeClass = window.DiscordSDK;
-        
-        if (!AlternativeClass) {
-            console.warn("Discord SDK not found yet, retrying...");
-            setTimeout(setupDiscord, 500);
-            return;
-        }
-        
-        // إذا وجدها في window مباشرة
-        discordSdk = new AlternativeClass("1420027881098055700");
-    } else {
-        // إذا وجدها داخل الكائن المغلف (وهذا هو المتوقع من ملفك الحالي)
-        discordSdk = new SDKClass("1420027881098055700");
+    // التأكد أن ما وجدناه هو "Constructor" (دالة لإنشاء كائن) وليس مجرد كائن فارغ
+    if (typeof SDKClass !== 'function') {
+        console.warn("Discord SDK not found yet, retrying...");
+        setTimeout(setupDiscord, 500);
+        return;
     }
 
     try {
+        // إنشاء الكائن باستخدام الكلاس الذي وجدناه
+        discordSdk = new SDKClass("1420027881098055700");
+
         await discordSdk.ready();
         console.log("Discord SDK ready!");
         
-        // المصادقة
+        // المصادقة (تأكد من إعداد الـ Redirect URI في Developer Portal إذا لزم الأمر)
         const { code } = await discordSdk.commands.authorize({
             client_id: "1420027881098055700",
             response_type: "code",
@@ -36,13 +29,18 @@ async function setupDiscord() {
         });
 
         await discordSdk.commands.authenticate({ access_token: code });
+        
+        // تحديث الحالة فور الدخول
+        updateActivity("يستعد لبدء المغامرة", "في القائمة الرئيسية");
+
     } catch (e) {
-        console.warn("Discord Auth failed - expected if not running inside Discord Activity.");
+        console.warn("Discord SDK Init/Auth failed - expected if not in Discord Activity.", e);
     }
 }
 
 async function updateActivity(details, state) {
-    if (!discordSdk) return;
+    // التأكد من أن الكائن جاهز وأننا داخل ديسكورد فعلياً
+    if (!discordSdk || !discordSdk.instanceId) return;
 
     try {
         await discordSdk.commands.setActivity({
@@ -61,4 +59,5 @@ async function updateActivity(details, state) {
     }
 }
 
+// بدء التشغيل
 setupDiscord();
