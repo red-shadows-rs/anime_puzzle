@@ -1,41 +1,40 @@
 // scripts/discord-presence.js
-
-// 1. تعريف المتغير في النطاق العام لضمان الوصول إليه
 let discordSdk;
 
 async function setupDiscord() {
-    // التأكد من أن المكتبة محملة
-    if (typeof window.discordSdk === 'undefined') {
-        console.error("Discord SDK not loaded! Check your script tags.");
+    // محاولة جلب المكتبة من أكثر من مصدر محتمل
+    const SDK = window.discordSdk?.DiscordSDK || window.DiscordSDK;
+    
+    if (!SDK) {
+        console.error("Discord SDK not found on window object.");
         return;
     }
 
-    const { DiscordSDK } = window.discordSdk;
-    discordSdk = new DiscordSDK("1420027881098055700"); // ضع الـ ID هنا
+    discordSdk = new SDK("1420027881098055700"); // الـ ID الخاص بك
 
     try {
         await discordSdk.ready();
-        console.log("Discord SDK is ready");
-        
-        // المصادقة
+        console.log("Discord SDK is ready!");
+
+        // المصادقة ضرورية للـ Activities
         const { code } = await discordSdk.commands.authorize({
             client_id: "1420027881098055700",
             response_type: "code",
             scope: ["identify", "guilds"],
             prompt: "none",
         });
-        
+
         await discordSdk.commands.authenticate({ access_token: code });
     } catch (e) {
-        console.warn("Discord RPC: Running outside Discord or Auth failed.");
+        console.warn("Discord Auth failed - likely running outside Discord.");
     }
 }
 
-// 2. تعديل الوظيفة لتجنب أخطاء Initialization
 async function updateActivity(details, state) {
-    if (!discordSdk) {
-        console.log("Waiting for Discord SDK...");
-        return; 
+    // إذا لم يجهز بعد، انتظر ثم حاول مرة أخرى
+    if (!discordSdk || !discordSdk.instanceId) {
+        setTimeout(() => updateActivity(details, state), 2000);
+        return;
     }
 
     try {
@@ -45,15 +44,14 @@ async function updateActivity(details, state) {
                 state: state,
                 assets: {
                     large_image: "game_logo",
-                    large_text: "aPuzzle",
+                    large_text: "aPuzzle"
                 },
                 timestamps: { start: Date.now() }
             }
         });
     } catch (err) {
-        console.error("Failed to set activity:", err);
+        console.error("Error setting activity:", err);
     }
 }
 
-// بدء التشغيل
 setupDiscord();
