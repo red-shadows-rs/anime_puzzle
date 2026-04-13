@@ -1,5 +1,5 @@
 <!--
-  aPuzzle | RS PROJECT
+  aPuzzle | RS PROJECT [ nightcoreat ]
 -->
 
 <!DOCTYPE html>
@@ -10,7 +10,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Rearrange scattered anime scenes into perfect pictures in this elegant and interactive puzzle game">
   <meta name="author" content="Red Shadows | RS">
-  <meta http-equiv="Content-Security-Policy" content="frame-ancestors *;">
   <link rel="stylesheet" href="styles/game-ui.css" />
   <link rel="stylesheet" href="styles/levelStyle.css" />
 </head>
@@ -18,7 +17,7 @@
   <h1>🧩 قائمة الألغاز</h1>
   <div class="currency-card">
   💰 عملاتك: <span id="coins">0</span>
-  <button id="btn-go-shop">🛒 متجر الأدوات</button>
+ <button id="btn-go-shop">🛒 متجر الأدوات</button>
   </div>
 
   <div class="levels-grid" id="levels-list"></div>
@@ -35,7 +34,7 @@
       window.location.href = 'shop.html';
     });
   }
-
+    
   let coins = parseInt(localStorage.getItem("coins") || "500");
   coinsEl.textContent = coins;
 
@@ -45,6 +44,7 @@
     coinsEl.textContent = coins;
   }
 
+  // تحميل بيانات المتجر أولا
   fetch("assets/shop.json")
     .then(res => res.json())
     .then(shopItems => {
@@ -55,7 +55,12 @@
     list.innerHTML = "";
 
     levels.forEach(level => {
-      // ... (نفس كود الحسابات الخاص بك بدون تغيير) ...
+      const shopItem = shopItems.find(item => item.type === "level" && item.levelId === level.id);
+      const price = shopItem ? shopItem.price : 0;
+
+      const isProgressUnlocked = progress.has(level.id);
+      const isShopUnlocked = localStorage.getItem(`unlocked_level_${level.id}`) === "true";
+      const isUnlocked = level.id === 1 || isProgressUnlocked || isShopUnlocked;
 
       const card = document.createElement("div");
       card.className = "level-card";
@@ -71,7 +76,6 @@
 
       if (isUnlocked) {
         btn.textContent = "🚀 ابدأ";
-        // هذا الاستخدام برمجياً مسموح به في ديسكورد
         btn.onclick = () => {
           window.location.href = `play.html?level=${level.id}`;
         };
@@ -79,10 +83,8 @@
         btn.textContent = "🛒 شراء من المتجر";
         btn.disabled = true;
       } else {
-        btn.textContent = `🔓 افتح بـ ${price} عملة`;
+        btn.textContent = `🔓 افتح بـ ${price} عملة من متجر الأدوات`;
         btn.onclick = () => {
-          // ديسكورد أحياناً يمنع confirm العادي، إذا لم تظهر النافذة 
-          // ستحتاج لبناء Modal بسيط كما فعلت في صفحة اللعب.
           if (coins >= price) {
             if (confirm(`هل تريد فتح هذا اللغز بـ ${price} عملة؟`)) {
               coins -= price;
@@ -114,5 +116,3 @@
 
 </body>
 </html>
-
-
