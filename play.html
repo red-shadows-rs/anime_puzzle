@@ -56,9 +56,7 @@
         const openShopBtn = document.getElementById("btn-open-shop");
         const closeShopBtn = document.getElementById("btn-close-shop");
 
-        // مستقبل الرسائل المحدث ليتوافق مع "المصفوفة"
         window.addEventListener('message', (event) => {
-            // التحقق إذا كانت البيانات مصفوفة وأول عنصر فيها هو 'close-shop'
             if (Array.isArray(event.data) && event.data[0] === 'close-shop') {
                 shopModal.style.display = "none";
                 if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
@@ -66,10 +64,10 @@
         });
 
         if (openShopBtn) {
-            openShopBtn.addEventListener('click', () => { // سنضيف ?mode=modal للرابط ليعرف المتجر أنه داخل نافذة
-    const iframe = shopModal.querySelector('iframe');
-    iframe.src = "shop.html?mode=modal"; 
-    shopModal.style.display = "flex"; });
+            openShopBtn.addEventListener('click', () => { 
+                const iframe = shopModal.querySelector('iframe');
+                iframe.src = "shop.html?mode=modal"; 
+                shopModal.style.display = "flex"; });
         }
         if (closeShopBtn) {
             closeShopBtn.addEventListener('click', () => { shopModal.style.display = "none"; });
@@ -80,10 +78,10 @@
             backBtn.addEventListener('click', () => { window.location.href = 'levels.html'; });
         }
                   
-            const winCloseBtn = document.getElementById("btn-win-close");
-            if (winCloseBtn) {
-                winCloseBtn.addEventListener('click', () => { window.location.href = 'levels.html'; });
-            }
+        const winCloseBtn = document.getElementById("btn-win-close");
+        if (winCloseBtn) {
+            winCloseBtn.addEventListener('click', () => { window.location.href = 'levels.html'; });
+        }
         });
     </script>
     <script src="scripts/levels.js"></script>
