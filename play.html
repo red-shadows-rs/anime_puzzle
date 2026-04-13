@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>🍬 aPuzzle - اللعب</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' https://unpkg.com; frame-ancestors *;">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval'; frame-ancestors *;">
     <link rel="stylesheet" href="styles/game-uiStyle.css" />
     <link rel="stylesheet" href="styles/winStyle.css" />
     <link rel="stylesheet" href="styles/shopStyle.css" />
@@ -84,7 +84,7 @@
         }
         });
     </script>
-    <script src="https://unpkg.com/@discord/embedded-app-sdk"></script>
+    <script src="scripts/discord-sdk-min.js"></script>
     <script src="scripts/discord-presence.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
