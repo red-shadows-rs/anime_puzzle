@@ -19,7 +19,7 @@ async function setupDiscord() {
         const { code } = await discordSdk.commands.authorize({
             client_id: "1420027881098055700",
             response_type: "code",
-            scope: ["identify", "rpc.activities.write"], // تأكد من وجود هذه الصلاحية
+            scope: ["identify", "rpc", "rpc.activities.write"], // تأكد من وجود هذه الصلاحية
             prompt: "default",
         });
         console.log("Authorize success, code received:", code);
