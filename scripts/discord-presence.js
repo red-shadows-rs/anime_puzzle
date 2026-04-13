@@ -1,7 +1,6 @@
 let discordSdk;
 
 async function setupDiscord() {
-    // محاولة جلب الـ SDK من النافذة العالمية
     const root = window.discordSdk || window.DiscordSDK;
     const SDKClass = root?.DiscordSDK || root;
 
@@ -12,24 +11,30 @@ async function setupDiscord() {
     }
 
     try {
-        // 1. إنشاء الكائن باستخدام ID تطبيقك
         discordSdk = new SDKClass("1420027881098055700");
-        
-        // 2. الانتظار حتى يصبح الـ SDK جاهزاً
         await discordSdk.ready();
-        console.log("Discord SDK is Ready!");
 
-        // 3. تحديث الحالة فوراً عند الدخول
-        // ملاحظة: جربنا تجاوز مرحلة الـ Auth لأنها تتعارض مع نطاق discordsays
+        // خطوة المصادقة (إجبارية لظهور الحالة)
+        const { code } = await discordSdk.commands.authorize({
+            client_id: "1420027881098055700",
+            response_type: "code",
+            scope: ["identify", "rpc.activities.write"],
+            prompt: "none", 
+        });
+
+        await discordSdk.commands.authenticate({ access_token: code });
+        
+        console.log("Authenticated Successfully!");
+
+        // استدعاء الحالة بناءً على الصفحة الحالية
         broadcastInitialActivity();
 
     } catch (e) {
-        console.error("SDK Setup Error:", e);
+        console.error("SDK Setup Error (Check Redirect URI or Scopes):", e);
     }
 }
 
 function broadcastInitialActivity() {
-    // تحديد النص بناءً على الصفحة الحالية
     let details = "يستعد للعب";
     let state = "القائمة الرئيسية";
 
@@ -56,7 +61,7 @@ async function updateActivity(details, state) {
                 details: details,
                 state: state,
                 assets: {
-                    large_image: "game_logo", // تأكد أن هذا الاسم موجود في الـ Developer Portal
+                    large_image: "game_logo", 
                     large_text: "Anime Puzzle"
                 },
                 timestamps: { 
@@ -70,5 +75,4 @@ async function updateActivity(details, state) {
     }
 }
 
-// بدء التشغيل
 setupDiscord();
