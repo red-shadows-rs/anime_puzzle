@@ -41,6 +41,13 @@
     }
 });
   </script>
+  <script src="https://unpkg.com/@discord/embedded-app-sdk"></script>
+  <script src="scripts/discord-presence.js"></script>
+  <script>
+    window.onload = () => {
+        updateActivity("يتسوق في المتجر", "يبحث عن أدوات مساعدة 🛒");
+    };
+  </script>
   <script src="scripts/shop.js"></script>
 </body>
 </html>
