@@ -11,28 +11,28 @@ async function setupDiscord() {
         return;
     }
 
-    try {
-        discordSdk = new SDKClass("1420027881098055700");
-        await discordSdk.ready();
-        console.log("Discord SDK ready!");
-
+try {
+        console.log("Checking Authorization...");
         const { code } = await discordSdk.commands.authorize({
             client_id: "1420027881098055700",
             response_type: "code",
-            scope: ["identify", "rpc", "rpc.activities.write"], // تأكد من وجود هذه الصلاحية
+            scope: ["identify", "rpc", "rpc.activities.write"],
             redirect_uri: "https://discordsays.com/.proxy/oauth2/callback",
-            prompt: "default",
+            prompt: "none", // بما أنك وافقت سلفاً، نتركها none
         });
-        console.log("Authorize success, code received:", code);
-        await discordSdk.commands.authenticate({ access_token: code });
-        isAuthed = true;
-        console.log("Discord Auth Success!");
 
-        // تحديث الحالة فور النجاح
+        console.log("Code received, authenticating...");
+        await discordSdk.commands.authenticate({ access_token: code });
+        
+        isAuthed = true;
+        console.log("Discord Auth Success! Status should appear now.");
+
+        // أرسل تحديث الحالة فوراً
         broadcastInitialActivity();
 
     } catch (e) {
-        console.warn("Discord Auth failed - Normal if in Browser", e);
+        console.error("Auth failed error details:", e);
+        // إذا كان الخطأ بسبب أنك وافقت سلفاً، قد نحتاج لتجربة prompt: 'default' لمرة واحدة فقط لتجديد التوكن
     }
 }
 
