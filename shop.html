@@ -23,18 +23,46 @@
     <div class="coins-bubble">💰 رصيدك الحالي: <span id="coins">0</span></div>
 
     <div id="shop-list"></div>
-    <button id="backButton" class="back-button" onclick="window.history.back()">
+    <button id="backButton" class="back-button">
       🔙 رجوع
     </button>
   </div>
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
     const backBtn = document.getElementById("backButton");
+    const coinsEl = document.getElementById("coins");
 
-    if (window.self !== window.top) {
-      backBtn.disabled = true;
-      backBtn.style.opacity = "0.5";
-      backBtn.title = "❌ الرجوع غير متاح داخل النافذة المنبثقة.";
+    // تحديث الرصيد (للتأكد من ظهوره فوراً)
+    let coins = localStorage.getItem("coins") || "500";
+    if (coinsEl) coinsEl.textContent = coins;
+
+    if (backBtn) {
+        // التحقق مما إذا كان المتجر مفتوحاً داخل Iframe (مثل صفحة اللعب)
+        if (window.self !== window.top) {
+            // داخل نافذة منبثقة (Modal): الزر يجب أن يغلق النافذة في الصفحة الأب
+            backBtn.textContent = "❌ إغلاق المتجر";
+            backBtn.addEventListener('click', () => {
+                // محاولة إغلاق المودال في الصفحة الأب إذا كانت الدالة موجودة
+                if (window.parent && typeof window.parent.closeShopModal === 'function') {
+                    window.parent.closeShopModal();
+                } else {
+                    // إذا لم نتمكن من الوصول للأب، نخفيه برمجياً كحل أخير
+                    window.parent.document.getElementById('shopModal').style.display = 'none';
+                }
+            });
+        } else {
+            // صفحة مستقلة (مثل الانتقال من قائمة المستويات)
+            backBtn.addEventListener('click', () => {
+                // نحاول الرجوع للخلف، وإذا لم يوجد تاريخ نعود للقائمة الرئيسية
+                if (document.referrer !== "") {
+                    window.history.back();
+                } else {
+                    window.location.href = 'levels.html';
+                }
+            });
+        }
     }
+});
   </script>
   <script src="scripts/shop.js"></script>
 </body>
