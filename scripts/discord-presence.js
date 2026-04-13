@@ -51,21 +51,21 @@ async function updateActivity(details, state) {
 
     try {
         await discordSdk.commands.setActivity({
-            // أضف pid: 0 لضمان التوافق
-            pid: 0, 
             activity: {
                 details: details,
                 state: state,
                 assets: {
-                    large_image: "game_logo",
+                    large_image: "game_logo", // تأكد أن هذا الاسم مطابق تماماً في الـ Developer Portal
                     large_text: "aPuzzle"
                 },
-                timestamps: { start: Date.now() }
+                timestamps: {
+                    start: Date.now()
+                }
             }
         });
-        console.log("Activity updated:", details);
+        console.log("Activity updated successfully!");
     } catch (err) {
-        console.error("RPC Error details:", err);
+        console.error("RPC Error:", err);
     }
 }
 
