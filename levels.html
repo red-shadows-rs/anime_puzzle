@@ -26,9 +26,8 @@
   <script>
   const coinsEl = document.getElementById("coins");
   const list = document.getElementById("levels-list");
-  const shopBtn = document.getElementById("btn-go-shop"); // الزر الجديد
+  const shopBtn = document.getElementById("btn-go-shop"); 
 
-  // ربط زر المتجر برمجياً
   if (shopBtn) {
     shopBtn.addEventListener('click', () => {
       window.location.href = 'shop.html';
@@ -44,7 +43,6 @@
     coinsEl.textContent = coins;
   }
 
-  // تحميل بيانات المتجر أولا
   fetch("assets/shop.json")
     .then(res => res.json())
     .then(shopItems => {
