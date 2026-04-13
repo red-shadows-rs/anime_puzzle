@@ -29,9 +29,17 @@ async function setupDiscord() {
         });
 
         await discordSdk.commands.authenticate({ access_token: code });
-        
+
+        console.log("Discord Authenticated!");
+
+        // --- الإضافة هنا: تحديث الحالة فوراً بناءً على الصفحة الحالية ---
+        if (window.location.pathname.includes("levels.html")) {
+            updateActivity("يختار لغزاً مناسباً", "في قائمة المستويات 🧩");
+        } else if (window.location.pathname.includes("shop.html")) {
+            updateActivity("يتسوق في المتجر", "يشتري أدوات مساعدة 🛒");
+        }
+        // -------------------------------------------------------
         // تحديث الحالة فور الدخول
-        updateActivity("يستعد لبدء المغامرة", "في القائمة الرئيسية");
 
     } catch (e) {
         console.warn("Discord SDK Init/Auth failed - expected if not in Discord Activity.", e);
