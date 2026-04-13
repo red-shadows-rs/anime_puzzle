@@ -42,17 +42,13 @@
     const startBtn = document.getElementById('btn-start');
     if (startBtn) {
         startBtn.addEventListener('click', () => {
-            // هنا نوجه المستخدم يدوياً للصفحة التالية
             window.location.href = 'levels.html';
         });
     }
 
-    // زر المتجر
     const shopBtn = document.getElementById('btn-shop');
     if (shopBtn) {
-        shopBtn.addEventListener('click', () => {
-            // بدلاً من الانتقال لصفحة جديدة، يفضل تغيير المسار هكذا 
-            // أو إظهار DIV المتجر إذا كنت ستدمجهما
+        shopBtn.addEventListener('click', () => { 
             window.location.href = 'shop.html';
         });
     }
@@ -62,4 +58,3 @@
 
 
 </html>
-
