@@ -27,7 +27,7 @@ async function setupDiscord() {
         const { code } = await instance.commands.authorize({
             client_id: "1420027881098055700",
             response_type: "code",
-            scope: ["identify", "rpc", "rpc.activities.write"],
+            scope: ["identify", "activities.write"],
             redirect_uri: "https://discordsays.com/.proxy/oauth2/callback",
             prompt: "default", 
         });
