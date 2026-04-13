@@ -1,140 +1,81 @@
-<!--
-  aPuzzle | RS PROJECT [ nightcoreat ]
--->
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <title>🍬 aPuzzle - قائمة الألغاز</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Rearrange scattered anime scenes into perfect pictures in this elegant and interactive puzzle game">
-  <meta name="author" content="Red Shadows | RS">
   <link rel="stylesheet" href="styles/game-ui.css" />
   <link rel="stylesheet" href="styles/levelStyle.css" />
 </head>
 <body>
   <h1>🧩 قائمة الألغاز</h1>
   <div class="currency-card">
-  💰 عملاتك: <span id="coins">0</span>
- <button id="btn-go-shop">🛒 متجر الأدوات</button>
+    💰 عملاتك: <span id="coins">0</span>
+    <button id="btn-go-shop">🛒 متجر الأدوات</button>
   </div>
 
   <div class="levels-grid" id="levels-list"></div>
 
   <script src="scripts/levels.js"></script>
   <script>
-  const coinsEl = document.getElementById("coins");
-  const list = document.getElementById("levels-list");
-  const shopBtn = document.getElementById("btn-go-shop"); 
+    const coinsEl = document.getElementById("coins");
+    const list = document.getElementById("levels-list");
+    const shopBtn = document.getElementById("btn-go-shop"); 
 
-  window.addEventListener('message', (event) => {
-    // التأكد من أن البيانات هي كائن وأن النوع هو المطلوب
-    if (event.data && event.data.type === 'close-shop') {
-        
-        // إغلاق المودال
-        const shopModal = document.getElementById("shopModal");
-        if (shopModal) {
-            shopModal.style.display = "none";
-        }
-
-        // تحديث العملات من localStorage
-        let updatedCoins = localStorage.getItem("coins") || "500";
-        const coinsDisplay = document.getElementById("coins");
-        if (coinsDisplay) {
-            coinsDisplay.textContent = updatedCoins;
-        }
-        
-        // إذا كان هناك دالة تحديث شاملة نستدعيها
-        if (typeof updateCoinsDisplay === 'function') {
-            updateCoinsDisplay();
-        }
+    if (shopBtn) {
+        shopBtn.addEventListener('click', () => {
+            window.location.href = 'shop.html';
+        });
     }
-});
-    
-  if (shopBtn) {
-    shopBtn.addEventListener('click', () => {
-      window.location.href = 'shop.html';
-    });
-  }
-    
-  let coins = parseInt(localStorage.getItem("coins") || "500");
-  coinsEl.textContent = coins;
 
-  const progress = new Set(JSON.parse(localStorage.getItem("puzzleProgress") || "[]"));
-
-  function updateCoinsDisplay() {
+    let coins = parseInt(localStorage.getItem("coins") || "500");
     coinsEl.textContent = coins;
-  }
 
-  fetch("assets/shop.json")
-    .then(res => res.json())
-    .then(shopItems => {
-      renderLevels(shopItems);
-    });
+    const progress = new Set(JSON.parse(localStorage.getItem("puzzleProgress") || "[]"));
 
-  function renderLevels(shopItems) {
-    list.innerHTML = "";
+    function updateCoinsDisplay() {
+        coins = parseInt(localStorage.getItem("coins") || "500");
+        coinsEl.textContent = coins;
+    }
 
-    levels.forEach(level => {
-      const shopItem = shopItems.find(item => item.type === "level" && item.levelId === level.id);
-      const price = shopItem ? shopItem.price : 0;
+    fetch("assets/shop.json")
+        .then(res => res.json())
+        .then(shopItems => { renderLevels(shopItems); });
 
-      const isProgressUnlocked = progress.has(level.id);
-      const isShopUnlocked = localStorage.getItem(`unlocked_level_${level.id}`) === "true";
-      const isUnlocked = level.id === 1 || isProgressUnlocked || isShopUnlocked;
+    function renderLevels(shopItems) {
+        list.innerHTML = "";
+        levels.forEach(level => {
+            const shopItem = shopItems.find(item => item.type === "level" && item.levelId === level.id);
+            const price = shopItem ? shopItem.price : 0;
+            const isUnlocked = level.id === 1 || progress.has(level.id) || localStorage.getItem(`unlocked_level_${level.id}`) === "true";
 
-      const card = document.createElement("div");
-      card.className = "level-card";
-      if (!isUnlocked) card.classList.add("locked");
+            const card = document.createElement("div");
+            card.className = "level-card " + (isUnlocked ? "" : "locked");
+            card.innerHTML = `<img src="${level.image}"><h3>${level.name}</h3><p>🧩 ${level.width} × ${level.height}</p>`;
 
-      card.innerHTML = `
-        <img src="${level.image}" alt="preview">
-        <h3>${level.name}</h3>
-        <p>🧩 ${level.width} × ${level.height}</p>
-      `;
-
-      const btn = document.createElement("button");
-
-      if (isUnlocked) {
-        btn.textContent = "🚀 ابدأ";
-        btn.onclick = () => {
-          window.location.href = `play.html?level=${level.id}`;
-        };
-      } else if (isShopUnlocked) {
-        btn.textContent = "🛒 شراء من المتجر";
-        btn.disabled = true;
-      } else {
-        btn.textContent = `🔓 افتح بـ ${price} عملة من متجر الأدوات`;
-        btn.onclick = () => {
-          if (coins >= price) {
-            if (confirm(`هل تريد فتح هذا اللغز بـ ${price} عملة؟`)) {
-              coins -= price;
-              updateCoinsDisplay();
-              localStorage.setItem("coins", coins);
-              progress.add(level.id);
-              localStorage.setItem("puzzleProgress", JSON.stringify([...progress]));
-              renderLevels(shopItems);
+            const btn = document.createElement("button");
+            if (isUnlocked) {
+                btn.textContent = "🚀 ابدأ";
+                btn.onclick = () => { window.location.href = `play.html?level=${level.id}`; };
+            } else {
+                btn.textContent = `🔓 افتح بـ ${price} عملة`;
+                btn.onclick = () => {
+                    if (coins >= price) {
+                        if (confirm(`فتح هذا اللغز؟`)) {
+                            coins -= price;
+                            localStorage.setItem("coins", coins);
+                            progress.add(level.id);
+                            localStorage.setItem("puzzleProgress", JSON.stringify([...progress]));
+                            updateCoinsDisplay();
+                            renderLevels(shopItems);
+                        }
+                    } else { alert("❌ رصيد غير كافٍ"); }
+                };
             }
-          } else {
-            alert("❌ لا تملك عملات كافية.");
-          }
-        };
-      }
-
-      card.appendChild(btn);
-
-      if (!isUnlocked) {
-        const overlay = document.createElement("div");
-        overlay.className = "locked-overlay";
-        overlay.textContent = "🔒 مقفل";
-        card.appendChild(overlay);
-      }
-
-      list.appendChild(card);
-    });
-  }
-</script>
-
+            card.appendChild(btn);
+            list.appendChild(card);
+        });
+    }
+  </script>
 </body>
 </html>
