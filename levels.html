@@ -18,7 +18,7 @@
   <h1>🧩 قائمة الألغاز</h1>
   <div class="currency-card">
   💰 عملاتك: <span id="coins">0</span>
-  <button onclick="location.href='shop.html'">🛒 متجر الأدوات</button>
+  <button id="btn-go-shop">🛒 متجر الأدوات</button>
   </div>
 
   <div class="levels-grid" id="levels-list"></div>
@@ -27,6 +27,14 @@
   <script>
   const coinsEl = document.getElementById("coins");
   const list = document.getElementById("levels-list");
+  const shopBtn = document.getElementById("btn-go-shop"); // الزر الجديد
+
+  // ربط زر المتجر برمجياً
+  if (shopBtn) {
+    shopBtn.addEventListener('click', () => {
+      window.location.href = 'shop.html';
+    });
+  }
 
   let coins = parseInt(localStorage.getItem("coins") || "500");
   coinsEl.textContent = coins;
@@ -37,7 +45,6 @@
     coinsEl.textContent = coins;
   }
 
-  // تحميل بيانات المتجر أولا
   fetch("assets/shop.json")
     .then(res => res.json())
     .then(shopItems => {
@@ -48,12 +55,7 @@
     list.innerHTML = "";
 
     levels.forEach(level => {
-      const shopItem = shopItems.find(item => item.type === "level" && item.levelId === level.id);
-      const price = shopItem ? shopItem.price : 0;
-
-      const isProgressUnlocked = progress.has(level.id);
-      const isShopUnlocked = localStorage.getItem(`unlocked_level_${level.id}`) === "true";
-      const isUnlocked = level.id === 1 || isProgressUnlocked || isShopUnlocked;
+      // ... (نفس كود الحسابات الخاص بك بدون تغيير) ...
 
       const card = document.createElement("div");
       card.className = "level-card";
@@ -69,6 +71,7 @@
 
       if (isUnlocked) {
         btn.textContent = "🚀 ابدأ";
+        // هذا الاستخدام برمجياً مسموح به في ديسكورد
         btn.onclick = () => {
           window.location.href = `play.html?level=${level.id}`;
         };
@@ -76,8 +79,10 @@
         btn.textContent = "🛒 شراء من المتجر";
         btn.disabled = true;
       } else {
-        btn.textContent = `🔓 افتح بـ ${price} عملة من متجر الأدوات`;
+        btn.textContent = `🔓 افتح بـ ${price} عملة`;
         btn.onclick = () => {
+          // ديسكورد أحياناً يمنع confirm العادي، إذا لم تظهر النافذة 
+          // ستحتاج لبناء Modal بسيط كما فعلت في صفحة اللعب.
           if (coins >= price) {
             if (confirm(`هل تريد فتح هذا اللغز بـ ${price} عملة؟`)) {
               coins -= price;
