@@ -28,6 +28,23 @@
   const list = document.getElementById("levels-list");
   const shopBtn = document.getElementById("btn-go-shop"); 
 
+  window.addEventListener('message', (event) => {
+    if (event.data === 'close-shop') {
+        // تنفيذ دالة الإغلاق الموجودة في صفحة اللعب
+        if (typeof closeShopModal === 'function') {
+            closeShopModal();
+        } else {
+            // حل بديل إذا لم يجد الدالة
+            document.getElementById("shopModal").style.display = "none";
+        }
+        
+        // تحديث العملات في صفحة اللعب لأن المستخدم ربما اشترى شيئاً
+        if (typeof updateCoinsDisplay === 'function') {
+            updateCoinsDisplay();
+        }
+    }
+});
+    
   if (shopBtn) {
     shopBtn.addEventListener('click', () => {
       window.location.href = 'shop.html';
