@@ -20,6 +20,7 @@ async function setupDiscord() {
             client_id: "1420027881098055700",
             response_type: "code",
             scope: ["identify", "rpc", "rpc.activities.write"], // تأكد من وجود هذه الصلاحية
+            redirect_uri: "https://discordsays.com/.proxy/oauth2/callback",
             prompt: "default",
         });
         console.log("Authorize success, code received:", code);
