@@ -29,23 +29,29 @@
                 setActivity: async (opts) => this._send('SET_ACTIVITY', opts),
             };
         }
-        async _send(cmd, args) {
-            return new Promise((resolve, reject) => {
-                const nonce = Math.random().toString(36).substring(2);
-                window.parent.postMessage(JSON.stringify({ cmd, args, nonce }), "*");
-                const handler = (event) => {
-                    try {
-                        const data = JSON.parse(event.data);
-                        if (data.nonce === nonce) {
-                            window.removeEventListener('message', handler);
-                            if (data.evt === 'ERROR') reject(data.data);
-                            else resolve(data.data);
-                        }
-                    } catch (e) {}
-                };
-                window.addEventListener('message', handler);
-            });
-        }
+async _send(cmd, args) {
+    return new Promise((resolve, reject) => {
+        const nonce = Math.random().toString(36).substring(2);
+        // التعديل هنا: ديسكورد يتوقع كائن يحتوي على cmd و args و nonce
+        const payload = {
+            cmd: cmd,
+            args: args,
+            nonce: nonce,
+        };
+        
+        window.parent.postMessage(payload, "*"); // أرسل الكائن مباشرة بدون JSON.stringify
+
+        const handler = (event) => {
+            const data = event.data;
+            if (data && data.nonce === nonce) {
+                window.removeEventListener('message', handler);
+                if (data.evt === 'ERROR') reject(data.data);
+                else resolve(data.data);
+            }
+        };
+        window.addEventListener('message', handler);
+    });
+}
     }
 
     exports.DiscordSDK = DiscordSDK;
