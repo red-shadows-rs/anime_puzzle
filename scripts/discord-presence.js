@@ -1,67 +1,54 @@
-// scripts/discord-presence.js
 let discordSdk;
-let isAuthed = false;
 
 async function setupDiscord() {
-    // جلب الكائن الأساسي من الملف الآخر
+    // محاولة جلب الـ SDK من النافذة العالمية
     const root = window.discordSdk || window.DiscordSDK;
-    // التأكد من الوصول للفئة (Class) الصحيحة
     const SDKClass = root?.DiscordSDK || root;
 
     if (!SDKClass || typeof SDKClass !== 'function') {
-        console.log("Searching for SDK Class...");
+        console.log("Searching for Discord SDK...");
         setTimeout(setupDiscord, 500);
         return;
     }
 
     try {
-        // تعريف المتغير محلياً أولاً للتأكد من إنشائه
-        const instance = new SDKClass("1420027881098055700");
-        discordSdk = instance; // إسناده للمتغير العالمي
-
-        await discordSdk.ready();
-        console.log("Discord SDK ready and instance created!");
-
-        console.log("Checking Authorization...");
-        // استخدام instance مباشرة هنا لضمان عدم وجود undefined
-        const { code } = await instance.commands.authorize({
-            client_id: "1420027881098055700",
-            response_type: "code",
-            scope: ["identify", "activities.write"],
-            redirect_uri: "https://discordsays.com/.proxy/oauth2/callback",
-            prompt: "default", 
-        });
-
-        console.log("Code received, authenticating...");
-        await instance.commands.authenticate({ access_token: code });
+        // 1. إنشاء الكائن باستخدام ID تطبيقك
+        discordSdk = new SDKClass("1420027881098055700");
         
-        isAuthed = true;
-        console.log("Discord Auth Success! Status should appear now.");
+        // 2. الانتظار حتى يصبح الـ SDK جاهزاً
+        await discordSdk.ready();
+        console.log("Discord SDK is Ready!");
 
+        // 3. تحديث الحالة فوراً عند الدخول
+        // ملاحظة: جربنا تجاوز مرحلة الـ Auth لأنها تتعارض مع نطاق discordsays
         broadcastInitialActivity();
 
     } catch (e) {
-        console.error("Auth failed error details:", e);
+        console.error("SDK Setup Error:", e);
     }
 }
 
 function broadcastInitialActivity() {
+    // تحديد النص بناءً على الصفحة الحالية
+    let details = "يستعد للعب";
+    let state = "القائمة الرئيسية";
+
     if (window.location.pathname.includes("levels.html")) {
-        updateActivity("يختار لغزاً", "في قائمة المستويات");
+        details = "يختار لغزاً";
+        state = "قائمة المستويات";
     } else if (window.location.pathname.includes("shop.html")) {
-        updateActivity("يتسوق", "في المتجر");
+        details = "يتسوق";
+        state = "المتجر";
     } else if (window.location.pathname.includes("play.html")) {
-        // في play.html سننتظر بيانات المستوى
-    } else {
-        updateActivity("يستعد للعب", "القائمة الرئيسية");
+        details = "يحل لغز أنمي";
+        state = "داخل اللعبة";
     }
+
+    updateActivity(details, state);
 }
 
 async function updateActivity(details, state) {
-    if (!discordSdk || !isAuthed) {
-        console.log("Waiting for Auth before updating activity...");
-        return;
-    }
+    if (!discordSdk) return;
 
     try {
         await discordSdk.commands.setActivity({
@@ -69,16 +56,19 @@ async function updateActivity(details, state) {
                 details: details,
                 state: state,
                 assets: {
-                    large_image: "game_logo",
-                    large_text: "aPuzzle"
+                    large_image: "game_logo", // تأكد أن هذا الاسم موجود في الـ Developer Portal
+                    large_text: "Anime Puzzle"
                 },
-                timestamps: { start: Date.now() }
+                timestamps: { 
+                    start: Date.now() 
+                }
             }
         });
-        console.log("Activity Update Sent:", details);
+        console.log("Activity update sent: " + details);
     } catch (err) {
-        console.error("RPC Error:", err);
+        console.error("Failed to set activity:", err);
     }
 }
 
+// بدء التشغيل
 setupDiscord();
