@@ -32,33 +32,21 @@
     const backBtn = document.getElementById("backButton");
     const coinsEl = document.getElementById("coins");
 
-    // تحديث الرصيد (للتأكد من ظهوره فوراً)
     let coins = localStorage.getItem("coins") || "500";
     if (coinsEl) coinsEl.textContent = coins;
 
     if (backBtn) {
-        // التحقق مما إذا كان المتجر مفتوحاً داخل Iframe (مثل صفحة اللعب)
+        // التحقق: هل المتجر داخل نافذة (Iframe)؟
         if (window.self !== window.top) {
-            // داخل نافذة منبثقة (Modal): الزر يجب أن يغلق النافذة في الصفحة الأب
             backBtn.textContent = "❌ إغلاق المتجر";
             backBtn.addEventListener('click', () => {
-                // محاولة إغلاق المودال في الصفحة الأب إذا كانت الدالة موجودة
-                if (window.parent && typeof window.parent.closeShopModal === 'function') {
-                    window.parent.closeShopModal();
-                } else {
-                    // إذا لم نتمكن من الوصول للأب، نخفيه برمجياً كحل أخير
-                    window.parent.document.getElementById('shopModal').style.display = 'none';
-                }
+                // إرسال رسالة نصية آمنة للصفحة الرئيسية
+                window.parent.postMessage('close-shop', '*');
             });
         } else {
-            // صفحة مستقلة (مثل الانتقال من قائمة المستويات)
+            // إذا كان المتجر مفتوحاً كصفحة كاملة
             backBtn.addEventListener('click', () => {
-                // نحاول الرجوع للخلف، وإذا لم يوجد تاريخ نعود للقائمة الرئيسية
-                if (document.referrer !== "") {
-                    window.history.back();
-                } else {
-                    window.location.href = 'levels.html';
-                }
+                window.location.href = 'levels.html';
             });
         }
     }
