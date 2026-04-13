@@ -22,24 +22,41 @@
       <h1>🍬 aPuzzle</h1>
     </header>
 
-    <main class="main-menu">
-      <div class="menu-card">
-        <h2>🎮 ابدأ اللعبة</h2>
-        <button onclick="startGame()">ابدأ</button>
-      </div>
+<main class="main-menu">
+  <div class="menu-card">
+    <h2>🎮 ابدأ اللعبة</h2>
+    <button id="btn-start">ابدأ</button>
+  </div>
 
-      <div class="menu-card">
-        <h2>🛒 متجر الأدوات</h2>
-        <button onclick="location.href='shop.html'">الدخول إلى المتجر</button>
-      </div>
-    </main>
+  <div class="menu-card">
+    <h2>🛒 متجر الأدوات</h2>
+    <button id="btn-shop">الدخول إلى المتجر</button>
+  </div>
+</main>
 
   </div>
 
   <script>
-    function startGame() {
-      window.location.href = "levels.html";
+    document.addEventListener('DOMContentLoaded', () => {
+     
+    const startBtn = document.getElementById('btn-start');
+    if (startBtn) {
+        startBtn.addEventListener('click', () => {
+            // هنا نوجه المستخدم يدوياً للصفحة التالية
+            window.location.href = 'levels.html';
+        });
     }
+
+    // زر المتجر
+    const shopBtn = document.getElementById('btn-shop');
+    if (shopBtn) {
+        shopBtn.addEventListener('click', () => {
+            // بدلاً من الانتقال لصفحة جديدة، يفضل تغيير المسار هكذا 
+            // أو إظهار DIV المتجر إذا كنت ستدمجهما
+            window.location.href = 'shop.html';
+        });
+    }
+});
   </script>
 </body>
 
