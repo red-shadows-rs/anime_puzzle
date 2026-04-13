@@ -2,17 +2,26 @@
 let discordSdk;
 
 async function setupDiscord() {
-    // في نسخة المتصفح، المكتبة تكون موجودة تحت اسم discordSdk (كائن كبير)
-    // أو Discord (حسب النسخة)، سنحاول الوصول إليها بذكاء
-    const SDKClass = window.discordSdk?.DiscordSDK || window.Discord?.DiscordSDK;
-    
-    if (!SDKClass) {
-        console.warn("Discord SDK not found yet, retrying...");
-        setTimeout(setupDiscord, 500);
-        return;
-    }
+    // في نسخة index.global.js التي رفعتها:
+    // المكتبة تعرف نفسها كـ window.discordSdk وبداخلها DiscordSDK
+    const SDKClass = window.discordSdk?.DiscordSDK;
 
-    discordSdk = new SDKClass("1420027881098055700");
+    if (!SDKClass) {
+        // فحص إضافي: هل هي موجودة مباشرة في window؟
+        const AlternativeClass = window.DiscordSDK;
+        
+        if (!AlternativeClass) {
+            console.warn("Discord SDK not found yet, retrying...");
+            setTimeout(setupDiscord, 500);
+            return;
+        }
+        
+        // إذا وجدها في window مباشرة
+        discordSdk = new AlternativeClass("1420027881098055700");
+    } else {
+        // إذا وجدها داخل الكائن المغلف (وهذا هو المتوقع من ملفك الحالي)
+        discordSdk = new SDKClass("1420027881098055700");
+    }
 
     try {
         await discordSdk.ready();
