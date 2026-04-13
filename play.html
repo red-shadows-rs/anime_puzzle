@@ -52,31 +52,30 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const shopModal = document.getElementById("shopModal");
-            const openShopBtn = document.getElementById("btn-open-shop");
-            const closeShopBtn = document.getElementById("btn-close-shop");
+        const shopModal = document.getElementById("shopModal");
+        const openShopBtn = document.getElementById("btn-open-shop");
+        const closeShopBtn = document.getElementById("btn-close-shop");
 
-            // استقبال رسالة الإغلاق من iframe المتجر
-            window.addEventListener('message', (event) => {
-                if (event.data && event.data.type === 'close-shop') {
-                    shopModal.style.display = "none";
-                    // تحديث العملات في الواجهة إذا كانت الدالة موجودة في game.js
-                    if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
-                }
-            });
+        // مستقبل الرسائل المحدث ليتوافق مع "المصفوفة"
+        window.addEventListener('message', (event) => {
+            // التحقق إذا كانت البيانات مصفوفة وأول عنصر فيها هو 'close-shop'
+            if (Array.isArray(event.data) && event.data[0] === 'close-shop') {
+                shopModal.style.display = "none";
+                if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
+            }
+        });
 
-            if (openShopBtn) {
-                openShopBtn.addEventListener('click', () => { shopModal.style.display = "flex"; });
-            }
-
-            if (closeShopBtn) {
-                closeShopBtn.addEventListener('click', () => { shopModal.style.display = "none"; });
-            }
-                  
-            const backBtn = document.getElementById("btn-back-levels");
-            if (backBtn) {
-                backBtn.addEventListener('click', () => { window.location.href = 'levels.html'; });
-            }
+        if (openShopBtn) {
+            openShopBtn.addEventListener('click', () => { shopModal.style.display = "flex"; });
+        }
+        if (closeShopBtn) {
+            closeShopBtn.addEventListener('click', () => { shopModal.style.display = "none"; });
+        }
+        
+        const backBtn = document.getElementById("btn-back-levels");
+        if (backBtn) {
+            backBtn.addEventListener('click', () => { window.location.href = 'levels.html'; });
+        }
                   
             const winCloseBtn = document.getElementById("btn-win-close");
             if (winCloseBtn) {
