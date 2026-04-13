@@ -18,26 +18,33 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const backBtn = document.getElementById("backButton");
-        const coinsEl = document.getElementById("coins");
+    const backBtn = document.getElementById("backButton");
+    
+    // فحص هل الرابط يحتوي على mode=modal
+    const urlParams = new URLSearchParams(window.location.search);
+    const isModal = urlParams.get('mode') === 'modal';
 
-        let coins = localStorage.getItem("coins") || "500";
-        if (coinsEl) coinsEl.textContent = coins;
-
-        if (backBtn) {
-            if (window.self !== window.top) {
-                backBtn.textContent = "❌ إغلاق المتجر";
-                backBtn.addEventListener('click', () => {
-                    // إرسال البيانات كمصفوفة لحل مشكلة Protocol Error
-                    window.parent.postMessage(['close-shop'], '*');
-                });
-            } else {
-                backBtn.addEventListener('click', () => {
+    if (backBtn) {
+        if (isModal) {
+            // الحالة الأولى: مفتوح كنافذة منبثقة داخل اللعب
+            backBtn.textContent = "❌ إغلاق المتجر";
+            backBtn.addEventListener('click', () => {
+                window.parent.postMessage(['close-shop'], '*');
+            });
+        } else {
+            // الحالة الثانية: مفتوح كصفحة كاملة (سواء ديسكورد أو متصفح)
+            backBtn.textContent = "🔙 رجوع";
+            backBtn.addEventListener('click', () => {
+                // إذا كان هناك تاريخ للرجوع نستخدمه، وإلا نعود للمستويات
+                if (document.referrer.includes('levels.html')) {
+                    window.history.back();
+                } else {
                     window.location.href = 'levels.html';
-                });
-            }
+                }
+            });
         }
-    });
+    }
+});
   </script>
   <script src="scripts/shop.js"></script>
 </body>
