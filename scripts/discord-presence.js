@@ -47,11 +47,12 @@ async function setupDiscord() {
 }
 
 async function updateActivity(details, state) {
-    // التأكد من أن الكائن جاهز وأننا داخل ديسكورد فعلياً
-    if (!discordSdk || !discordSdk.instanceId) return;
+    if (!discordSdk) return;
 
     try {
         await discordSdk.commands.setActivity({
+            // أضف pid: 0 لضمان التوافق
+            pid: 0, 
             activity: {
                 details: details,
                 state: state,
@@ -62,8 +63,9 @@ async function updateActivity(details, state) {
                 timestamps: { start: Date.now() }
             }
         });
+        console.log("Activity updated:", details);
     } catch (err) {
-        console.error("RPC Error:", err);
+        console.error("RPC Error details:", err);
     }
 }
 
