@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>🍬 aPuzzle - اللعب</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.discord.com https://*.discordapp.com; frame-ancestors *;">
+    <meta http-equiv="Content-Security-Policy" content="frame-ancestors *;">
     <link rel="stylesheet" href="styles/game-uiStyle.css" />
     <link rel="stylesheet" href="styles/winStyle.css" />
     <link rel="stylesheet" href="styles/shopStyle.css" />
@@ -82,18 +82,6 @@
         if (winCloseBtn) {
             winCloseBtn.addEventListener('click', () => { window.location.href = 'levels.html'; });
         }
-        });
-    </script>
-    <script src="scripts/discord-sdk-min.js?v=1.4"></script>
-    <script src="scripts/discord-presence.js?v=1.13"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-        // انتظر قليلاً حتى يتم تحميل بيانات المستوى من game.js
-                setTimeout(() => {
-                    const levelTitle = document.getElementById('level-title').innerText;
-                    const difficulty = document.getElementById('difficulty-label').innerText;
-                updateActivity(`يحل لغز: ${levelTitle}`, `مستوى الصعوبة: ${difficulty}`);
-            }, 2000);
         });
     </script>
     <script src="scripts/levels.js"></script>
